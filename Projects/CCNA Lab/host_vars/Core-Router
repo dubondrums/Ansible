@@ -1,0 +1,12 @@
+---
+# Layer 3 interface profile for Router 1
+l3_interfaces_to_configure:
+  - name: "GigabitEthernet0/0"
+    address: "10.0.0.2/30"     # Ansible converts CIDR into Cisco mask syntax automatically
+  - name: "GigabitEthernet0/1"
+    address: "10.0.0.5/30"
+  - name: "GigabitEthernet0/2"
+    address: "10.0.0.9/30"  
+  - name: "Loopback0"
+    address: "10.255.255.2/32"
+

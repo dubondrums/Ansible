@@ -1,0 +1,70 @@
+---
+# Playbook to setup complete folder structure including Roles and a site.yaml root file
+
+- name: Create a new Ansible Project with Roles and site.yaml
+  hosts: localhost
+  connection: local       # Bypasses SSH for local WSL executions
+  gather_facts: false     # Speeds up local execution
+  
+  vars:
+    directory: "/home/cwilliams/Ansible/Projects/"
+    # Standard Ansible Role directories to build
+    role_subfolders:
+      - tasks
+      - handlers
+      - templates
+      - defaults
+      - vars
+
+  vars_prompt:
+    - name: project
+      prompt: "Name of Project/Customer?"
+      private: no
+
+    - name: role_name
+      prompt: "Name of the initial Role to create? (e.g., switch_vlan)"
+      private: no
+
+  tasks: 
+    - name: Create Base Project Directory and Group Vars Folder
+      ansible.builtin.file:
+        path: "{{ directory }}{{ project }}/group_vars"
+        state: directory
+        mode: '0755'
+
+    - name: Create Ansible Role Directory Structure
+      ansible.builtin.file:
+        path: "{{ directory }}{{ project }}/roles/{{ role_name }}/{{ item }}"
+        state: directory
+        mode: '0755'
+      loop: "{{ role_subfolders }}"
+
+    - name: Initialize empty main.yaml files inside tasks and defaults
+      ansible.builtin.file:
+        path: "{{ directory }}{{ project }}/roles/{{ role_name }}/{{ item }}/main.yaml"
+        state: touch
+        mode: '0644'
+      loop:
+        - tasks
+        - defaults
+
+    - name: Copy ansible.cfg
+      ansible.builtin.copy:
+        src: "./ansible.cfg"
+        dest: "{{ directory }}{{ project }}/ansible.cfg"
+        mode: '0644'
+
+    - name: Generate the main site.yaml execution playbook
+      ansible.builtin.copy:
+        dest: "{{ directory }}{{ project }}/site.yaml"
+        mode: '0644'
+        content: |
+          ---
+          # Main entrypoint playbook for {{ project }}
+          
+          - name: Deploy configurations to hosts
+            hosts: all
+            gather_facts: false
+            
+            roles:
+              - {{ role_name }}

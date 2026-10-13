@@ -1,0 +1,5 @@
+## Ansible Hosts File
+
+[switches]
+SW1 ansible_host=192.168.142.100
+

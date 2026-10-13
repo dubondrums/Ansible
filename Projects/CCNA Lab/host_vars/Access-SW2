@@ -1,0 +1,7 @@
+---
+
+# L3 Interfaces for Access-SW2
+
+l3_interfaces_to_configure:
+  - name: "Vlan99"
+    address: "10.0.99.12/24"

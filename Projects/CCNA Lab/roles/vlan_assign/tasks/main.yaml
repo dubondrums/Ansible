@@ -1,0 +1,13 @@
+---
+
+# Task file for configuring VLANs
+
+- name: Deploy VLAN configurations to network devices
+  cisco.ios.ios_vlans:
+    config:
+      - vlan_id: "{{ item.id }}"
+        name: "{{ item.name }}"
+        description: "{{ item.description }}"
+        state: "{{ item.state }}"
+    state: merged
+  loop: "{{ vlans_to_configure }}"

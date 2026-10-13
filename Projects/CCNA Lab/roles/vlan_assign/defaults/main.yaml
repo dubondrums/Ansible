@@ -1,0 +1,21 @@
+---
+
+# Default configuration for VLANs on the project
+
+vlans_to_configure:
+  - id: 10
+    name: "Sales"
+    description: "Sales VLAN"
+    state: active
+  - id: 20
+    name: "Voice"
+    description: "Voice VLAN"
+    state: active
+  - id: 30
+    name: "Servers"
+    description: "Server VLAN"
+    state: active
+  - id: 99
+    name: "Native"
+    description: "Native VLAN"
+    state: active

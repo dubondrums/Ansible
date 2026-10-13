@@ -1,0 +1,9 @@
+---
+# Main entrypoint playbook for DevNet Lab
+
+- name: Deploy configurations to hosts
+  hosts: all
+  gather_facts: false
+  
+  roles:
+    - DHCP

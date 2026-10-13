@@ -1,0 +1,16 @@
+---
+# Main entrypoint playbook for CCNA Lab
+
+- name: Deploy configurations to hosts
+  hosts: all
+  gather_facts: false
+  
+  roles:
+    - assign_ip_addr
+
+- name: Deploy Interface Configurations across Infrastructure
+  hosts: all
+  gather_facts: false
+
+  roles:
+    - vlan_assign # The name of the role you created

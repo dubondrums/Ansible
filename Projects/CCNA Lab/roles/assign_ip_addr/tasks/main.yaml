@@ -1,0 +1,18 @@
+---
+# Tasks file for assigning Layer 3 IP configurations
+
+- name: Configure Layer 3 IP addressing on Cisco IOS interfaces
+  cisco.ios.ios_l3_interfaces:
+    config:
+      - name: "{{ item.name }}"
+        ipv4:
+          - address: "{{ item.address }}"
+  loop: "{{ l3_interfaces_to_configure | default([]) }}"
+  # The default([]) prevents crashing if a device has no L3 interfaces defined
+
+- name: Ensure Layer 3 interfaces are enabled (no shutdown)
+  cisco.ios.ios_interfaces:
+    config:
+      - name: "{{ item.name }}"
+        enabled: true
+  loop: "{{ l3_interfaces_to_configure | default([]) }}"

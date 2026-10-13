@@ -1,0 +1,11 @@
+---
+# Default Login Details
+
+ansible_connection: ansible.netcommon.network_cli
+ansible_network_os: cisco.ios.ios
+ansible_user: chris
+ansible_password: cisco123
+ansible_become: true
+ansible_become_method: enable
+
+directory: C:\Users\cwilliams\Documents\Ansible\Projects\OSPF_20260708

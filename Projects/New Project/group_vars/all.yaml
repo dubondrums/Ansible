@@ -1,0 +1,9 @@
+---
+# Default Login Details
+
+ansible_user: "chris"
+ansible_ssh_pass: "cisco"
+ansible_network_os: "cisco"
+ansible_connection: "network_cli"
+
+directory: "/home/cwilliams/Ansible/Projects/"

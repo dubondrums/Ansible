@@ -1,0 +1,18 @@
+---
+
+## Configure Interfaces on All Routers
+- name: Configure IP Interfaces
+  hosts: R0
+
+  tasks:
+
+  - name: Enable All R0 Interfaces
+    cisco.ios.ios_interfaces:
+      config:
+        - name: GigabitEthernet0/1
+          description: Internet Into Area 0
+          enabled: true
+        - name: Loopback0
+          description: Loopback 0
+          enabled: true
+
