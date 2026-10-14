@@ -1,13 +1,13 @@
 ---
-- name: Configure device interfaces (Routers and Switches)
+
+- name: Configure router interfaces, subinterfaces, and tunnels
   cisco.ios.ios_config:
     lines:
       - "{{ 'encapsulation dot1Q ' ~ item.vlan_id if item.vlan_id is defined else omit }}"
       - description {{ item.description }}
-      - "{{ 'switchport mode ' ~ item.mode if item.mode is defined else omit }}"
-      - "{{ 'switchport access vlan ' ~ item.access_vlan if item.access_vlan is defined else omit }}"
-      - "{{ 'switchport trunk allowed vlan ' ~ item.allowed_vlans if item.allowed_vlans is defined else omit }}"
-      - "{{ 'ip address ' ~ item.ip_address ~ ' ' ~ item.netmask if item.ip_address is defined else omit }}"
+      - "{{ 'tunnel source ' ~ item.tunnel_source if item.tunnel_source is defined else omit }}"
+      - "{{ 'tunnel destination ' ~ item.tunnel_destination if item.tunnel_destination is defined else omit }}"
+      - ip address {{ item.ip_address }} {{ item.netmask }}
       - no shutdown
     parents: "interface {{ item.name }}"
   loop: "{{ site_interfaces[inventory_hostname].interfaces }}"
