@@ -1,0 +1,56 @@
+# How to Setup Devices to Talk to Ansible
+
+## Establish Connectivity
+
+### For GNS3 Devices
+First, build your lab as desired. For external connectivity, I have local LAN connection from my Dell laptop connected to an external switch. Inside GNS3, I have a port on all the virtual devices connected via a dumb switch to a Network Cloud on the GNS3 VM. Using port Eth2 on the VM allows external (bridged) connections. Once your devices are connected to this network, they can use DHCP from the VM to get addressing on the management port. This is the easiet way to establish connectivity. Just keep track of what device receives what IP address. I usually have a little Notepad doc going that Ill copy this information down on.  Make sure you can ping the devices from the control node. 
+
+### For "Real" Devices
+Whether you are connecting your laptop into the network, you need to be able to communicate with the nodess. If there is a management vlan in place, simply connect yourself onto that network to begin. Make sure you can ping all devices from the control node.
+
+### Setup SSH on the Devices
+For Ansible to work, you need to be able to SSH into the nodes. Whether you are given this information or configure it yourself, it is easy to get going. For SSH to work, the node needs a few things: an interface with an IP address, a user name configured with admin privilges, and a domain-name configured. Here is an example on how to configure these items:
+
+host BRANCH_ROUTER
+int g0/2
+ip add 10.10.20.10 255.255.255.0
+no shut
+exit
+username chris priv 15 secret cisco
+ip domain name virl.info
+crypto key generate rsa
+2048
+
+Next, you'll need to activate SSH v2, and to allow console connections through it as well. Here is how:
+
+ip ssh version 2
+line vty 0 15
+login local
+transport input ssh
+exit
+do wr
+
+### Connecting a CML Instance to WSL / Ansible
+In order for WSL to be able to connect to the CML devices, the matching domain name, a route and VRF needs to be added to the CML routers, as well as a default route.  Adding the VRF causes the IP of the interface to be wiped, so create the VRF and add the VRF to it before setting the address. For CML switches, simply create a manangement vlan and set the SVI of that vlan to connect to the control node. I usually create vlan 99 and set the IP for it to match the network shown below, and then the port connected to the control node is placed in that vlan. See the example below:
+
+---Create the VRF---
+vrf definition MGMT
+ !
+ address-family ipv4
+ exit-address-family
+
+
+---Configure the management interface and route---
+interface G0/0
+ description to port1.sandbox-backend
+ vrf forwarding MGMT
+ ip address 10.10.20.160 255.255.255.0 <---- This ip address must be in the 10.10.20.0/24 network
+ no shutdown 
+ no mop enabled
+ no mop sysid
+!
+!
+ip forward-protocol nd
+!
+!         
+ip route vrf MGMT 0.0.0.0 0.0.0.0 10.10.20.254 <---- This is what really established connectivity via SSH!
