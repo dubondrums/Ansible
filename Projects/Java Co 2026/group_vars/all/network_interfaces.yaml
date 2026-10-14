@@ -109,9 +109,9 @@ site_interfaces:
         mode: trunk
         allowed_vlans: "10,20,30"
       - name: GigabitEthernet1/0/2
-        description: "Access port for server"
-        mode: access
-        access_vlan: 20
+        description: "Trunk port for server"
+        mode: trunk
+        allowed_vlans: "10,20,30"
       - name: Vlan10
         description: "MGMT SVI"
         ip_address: "10.1.10.2"
