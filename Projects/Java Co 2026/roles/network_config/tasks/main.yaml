@@ -5,6 +5,7 @@
       - "{{ 'encapsulation dot1Q ' ~ item.vlan_id if item.vlan_id is defined else omit }}"
       - description {{ item.description }}
       - ip address {{ item.ip_address }} {{ item.netmask }}
+      - no shutdown
     parents: "interface {{ item.name }}"
   loop: "{{ site_interfaces[inventory_hostname].interfaces }}"
   when: inventory_hostname in site_interfaces
