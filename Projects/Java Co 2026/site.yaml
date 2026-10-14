@@ -6,4 +6,5 @@
   gather_facts: false
   
   roles:
-    - switch_vlan
+    - network_config
+    

@@ -1,0 +1,17 @@
+---
+
+all:
+  hosts:
+    ISP_ROUTER:
+      ansible_host: 10.10.20.8
+      ansible_connection: ansible.builtin.network_cli
+      ansible_network_os: cisco.ios.ios
+      ansible_user: chris
+      ansible_password: cisco
+    
+    CORE_ROUTER:
+      ansible_host: 10.10.20.9
+      ansible_connection: ansible.builtin.network_cli
+      ansible_network_os: cisco.ios.ios
+      ansible_user: chris
+      ansible_password: cisco

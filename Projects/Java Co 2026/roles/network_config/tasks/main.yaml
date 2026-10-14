@@ -8,3 +8,5 @@
     parents: "interface {{ item.name }}"
   loop: "{{ site_interfaces[inventory_hostname].interfaces }}"
   when: inventory_hostname in site_interfaces
+
+  
