@@ -35,3 +35,9 @@ site_interfaces:
         netmask: 255.255.255.0
         vlan_id: 30     
       
+    HQ-Server:
+      interfaces:
+      - name: GigabitEthernet0/0
+        description: "Connection to SW-1"
+        ip_address: 10.10.10.2
+        netmask: 255.255.255.0
