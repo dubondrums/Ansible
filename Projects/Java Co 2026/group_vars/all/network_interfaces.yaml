@@ -1,0 +1,37 @@
+---
+#Interface and IP configs for the network devices
+
+site_interfaces:
+    ISP_ROUTER:
+      interfaces:
+      - name: GigabitEthernet0/0
+        description: "Uplink to CORE_Router"
+        ip_address: 198.51.100.1
+        netmask: 255.255.255.252
+      - name: Loopback1
+        description: "Loopback interface for ISP_ROUTER"
+        ip_address: 1.1.1.1
+        netmask: 255.255.255.255
+
+    CORE-ROUTER:
+      interfaces:
+      - name: GigabitEthernet0/0
+        description: "Uplink to ISP_ROUTER"
+        ip_address: 198.51.100.2
+        netmask: 255.255.255.252
+      - name: GigabitEthernet0/1.10
+        description: "VLAN 10 interface for MGMT"
+        ip_address: 10.10.10.1
+        netmask: 255.255.255.0
+        vlan_id: 10
+      - name: GigabitEthernet0/1.20
+        description: "VLAN 20 interface for Corp"
+        ip_address: 10.10.20.1
+        netmask: 255.255.255.0
+        vlan_id: 20
+      - name: GigabitEthernet0/1.30
+        description: "VLAN 30 interface for Guest"
+        ip_address: 10.10.30.1
+        netmask: 255.255.255.0
+        vlan_id: 30     
+      
