@@ -45,6 +45,12 @@ site_interfaces:
         description: "Loopback interface for CORE_ROUTER"
         ip_address: 2.2.2.2
         netmask: 255.255.255.255
+      - name: Tunnel0
+        description: "GRE Tunnel to Branch"
+        ip_address: "10.255.0.1"
+        netmask: "255.255.255.252"
+        tunnel_source: "GigabitEthernet0/0"
+        tunnel_destination: "198.51.100.2" # Branch public IP
       
     HQ-Server:
       interfaces:
@@ -61,8 +67,12 @@ site_interfaces:
     BRANCH_ROUTER:
       interfaces:
       - name: GigabitEthernet0/0
-        description: "Uplink to SW-2"
+        description: "Uplink to SW-1"
         ip_address: 10.1.50.2
+        netmask: 255.255.255.0
+      - name: GigabitEthernet0/1
+        description: "Uplink to SW-2"
+        ip_address: 10.1.60.1
         netmask: 255.255.255.0
       - name: GigabitEthernet0/1.10
         description: "VLAN 10 interface for MGMT"
@@ -83,6 +93,12 @@ site_interfaces:
         description: "Loopback interface for BRANCH_ROUTER"
         ip_address: 3.3.3.3
         netmask: 255.255.255.255
+      - name: Tunnel0
+        description: "GRE Tunnel to Core"
+        ip_address: "10.255.0.2"
+        netmask: "255.255.255.252"
+        tunnel_source: "GigabitEthernet0/0"
+        tunnel_destination: "198.51.100.1" # Core public IP
 
 # Switches
 

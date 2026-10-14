@@ -1,0 +1,19 @@
+---
+# This file contains OSPF configuration variables for the network devices.
+
+ospf_configs:
+  CORE_ROUTER:
+    - ospf_process_id: 1
+      router_id: 2.2.2.2
+      networks:
+        - network 10.1.10.0 0.0.0.255 area 0
+        - network 10.1.20.0 0.0.0.255 area 0
+        - network 10.1.30.0 0.0.0.255 area 0
+        - network 198.51.100.0 0.0.0.3 area 0
+  BRANCH_ROUTER:
+    - ospf_process_id: 1
+      router_id: 3.3.3.3
+      networks:
+        - network 10.1.10.0 0.0.0.255 area 0
+        - network 10.1.20.0 0.0.0.255 area 0
+        - network 10.1.30.0 0.0.0.255 area 0
