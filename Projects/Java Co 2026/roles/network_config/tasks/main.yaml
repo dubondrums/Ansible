@@ -1,0 +1,10 @@
+---
+- name: Configure router subinterfaces and IP addresses
+  cisco.ios.ios_config:
+    lines:
+      - encapsulation dot1Q {{ item.vlan_id }}
+      - description {{ item.description }}
+      - ip address {{ item.ip_address }} {{ item.netmask }}
+    parents: "interface {{ item.name }}"
+  loop: "{{ site_interfaces[inventory_hostname].interfaces }}"
+  when: inventory_hostname in site_interfaces
