@@ -2,7 +2,7 @@
 - name: Configure router subinterfaces and IP addresses
   cisco.ios.ios_config:
     lines:
-      - encapsulation dot1Q {{ item.vlan_id }}
+      - "{{ 'encapsulation dot1Q ' ~ item.vlan_id if item.vlan_id is defined else omit }}"
       - description {{ item.description }}
       - ip address {{ item.ip_address }} {{ item.netmask }}
     parents: "interface {{ item.name }}"

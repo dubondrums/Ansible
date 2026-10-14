@@ -13,7 +13,7 @@ site_interfaces:
         ip_address: 1.1.1.1
         netmask: 255.255.255.255
 
-    CORE-ROUTER:
+    CORE_ROUTER:
       interfaces:
       - name: GigabitEthernet0/0
         description: "Uplink to ISP_ROUTER"
