@@ -2,6 +2,9 @@
 
 all:
   hosts:
+   
+   #Routers
+   
     ISP_ROUTER:
       ansible_host: 10.10.20.8
       ansible_connection: ansible.builtin.network_cli
@@ -15,3 +18,27 @@ all:
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco
+
+    HQ-Server:
+      ansible_host: 10.10.20.13
+      ansible_connection: ansible.builtin.network_cli
+      ansible_network_os: cisco.ios.ios
+      ansible_user: chris
+      ansible_password: cisco
+
+# Switches
+
+    SW1:
+      ansible_host: 10.10.20.11
+      ansible_connection: ansible.builtin.network_cli
+      ansible_network_os: cisco.ios.ios
+      ansible_user: chris
+      ansible_password: cisco
+
+    SW2:  
+      ansible_host: 10.10.20.12
+      ansible_connection: ansible.builtin.network_cli
+      ansible_network_os: cisco.ios.ios
+      ansible_user: chris
+      ansible_password: cisco
+
