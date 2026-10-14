@@ -1,0 +1,9 @@
+---
+# Main entrypoint playbook for Java Co 2026
+
+- name: Deploy configurations to hosts
+  hosts: all
+  gather_facts: false
+  
+  roles:
+    - switch_vlan

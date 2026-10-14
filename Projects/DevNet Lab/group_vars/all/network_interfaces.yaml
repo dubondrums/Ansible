@@ -1,0 +1,6 @@
+---
+# Interface and IP configs for the network devices
+
+site_interfaces:
+  Check 1 2
+  
