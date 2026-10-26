@@ -8,7 +8,7 @@ site_interfaces:
     ISP_01:
       interfaces:
       - name: GigabitEthernet0/1
-        description: "Uplink to CORE_Router"
+        description: "Link to EDGE-01"
         ip_address: 198.51.100.1
         netmask: 255.255.255.252
       - name: Loopback1
@@ -19,7 +19,7 @@ site_interfaces:
     ISP_02:
       interfaces:
       - name: GigabitEthernet0/1
-        description: "Uplink to CORE_Router"
+        description: "Link to EDGE-02"
         ip_address: 203.0.113.1
         netmask: 255.255.255.252
       - name: Loopback1
@@ -27,7 +27,7 @@ site_interfaces:
         ip_address: 2.2.2.2
         netmask: 255.255.255.255
 
-    CORE_ROUTER:
+    EDGE_01:
       interfaces:
       - name: GigabitEthernet0/0
         description: "Uplink to ISP_ROUTER"
@@ -37,32 +37,7 @@ site_interfaces:
         description: "Trying Interface On"
         ip_address: 10.1.50.1
         netmask: 255.255.255.0
-      - name: GigabitEthernet0/1.10
-        description: "VLAN 10 interface for MGMT"
-        ip_address: 10.1.10.2
-        netmask: 255.255.255.0
-        vlan_id: 10
-      - name: GigabitEthernet0/1.20
-        description: "VLAN 20 interface for Corp"
-        ip_address: 10.1.20.2
-        netmask: 255.255.255.0
-        vlan_id: 20
-      - name: GigabitEthernet0/1.30
-        description: "VLAN 30 interface for Guest"
-        ip_address: 10.1.30.2
-        netmask: 255.255.255.0
-        vlan_id: 30
-      - name: Loopback1
-        description: "Loopback interface for CORE_ROUTER"
-        ip_address: 2.2.2.2
-        netmask: 255.255.255.255
-      - name: Tunnel0
-        description: "GRE Tunnel to Branch"
-        ip_address: "10.255.0.1"
-        netmask: "255.255.255.252"
-        tunnel_source: "GigabitEthernet0/0"
-        tunnel_destination: "198.51.100.2" # Branch public IP
-      
+    
     HQ-Server:
       interfaces:
       - name: GigabitEthernet0/1
