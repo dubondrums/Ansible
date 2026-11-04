@@ -1,0 +1,58 @@
+---
+
+all:
+  hosts:
+   
+   #Routers
+   
+    R-ISP:
+      ansible_host: 10.10.20.10
+      ansible_connection: ansible.builtin.network_cli
+      ansible_network_os: cisco.ios.ios
+      ansible_user: chris
+      ansible_password: cisco123
+    
+    R-HQ1:
+      ansible_host: 10.10.20.11
+      ansible_connection: ansible.builtin.network_cli
+      ansible_network_os: cisco.ios.ios
+      ansible_user: chris
+      ansible_password: cisco123
+
+    R-HQ2:
+      ansible_host: 10.10.20.12
+      ansible_connection: ansible.builtin.network_cli
+      ansible_network_os: cisco.ios.ios
+      ansible_user: chris
+      ansible_password: cisco123
+
+    R-BR1:
+      ansible_host: 10.10.20.13
+      ansible_connection: ansible.builtin.network_cli
+      ansible_network_os: cisco.ios.ios
+      ansible_user: chris
+      ansible_password: cisco123
+
+    R-BR2:
+      ansible_host: 10.10.20.14
+      ansible_connection: ansible.builtin.network_cli
+      ansible_network_os: cisco.ios.ios
+      ansible_user: chris
+      ansible_password: cisco123
+
+# Switches
+
+    SW-DIST1:
+      ansible_host: 10.10.20.15
+      ansible_connection: ansible.builtin.network_cli
+      ansible_network_os: cisco.ios.ios
+      ansible_user: chris
+      ansible_password: cisco
+
+    SW2:  
+      ansible_host: 10.10.20.12
+      ansible_connection: ansible.builtin.network_cli
+      ansible_network_os: cisco.ios.ios
+      ansible_user: chris
+      ansible_password: cisco
+

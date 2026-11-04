@@ -1,0 +1,55 @@
+Device,Interface,IPv4 Address,Subnet Mask,Network / Subnet,VLAN,Connected Device,Connected Interface,Purpose,Notes
+R-ISP,Gi0/0,198.51.100.1,255.255.255.252,198.51.100.0/30,WAN,R-HQ1,Gi0/0,ISP-HQ1 point-to-point,
+R-HQ1,Gi0/0,198.51.100.2,255.255.255.252,198.51.100.0/30,WAN,R-ISP,Gi0/0,ISP-HQ1 point-to-point,
+R-ISP,Gi0/1,198.51.100.5,255.255.255.252,198.51.100.4/30,WAN,R-HQ2,Gi0/0,ISP-HQ2 point-to-point,
+R-HQ2,Gi0/0,198.51.100.6,255.255.255.252,198.51.100.4/30,WAN,R-ISP,Gi0/1,ISP-HQ2 point-to-point,
+R-HQ1,Gi0/1,10.0.0.1,255.255.255.252,10.0.0.0/30,TRANSIT,R-HQ2,Gi0/1,HQ router interconnect,
+R-HQ2,Gi0/1,10.0.0.2,255.255.255.252,10.0.0.0/30,TRANSIT,R-HQ1,Gi0/1,HQ router interconnect,
+R-HQ1,Gi0/2,10.0.0.5,255.255.255.252,10.0.0.4/30,TRANSIT,SW-DIST1,Gi0/0,Routed campus uplink,"Use no switchport + IP if using multilayer switch image; IOSvL2 is L2-only, so configure trunk/router-on-a-stick instead or replace with IOL-L3."
+SW-DIST1,Gi0/0,N/A,N/A,10.0.0.4/30,TRANSIT,R-HQ1,Gi0/2,L2 switch uplink,"IOSvL2 is Layer 2 only; use trunking and router-on-a-stick, or substitute a supported L3 switch node."
+R-HQ1,Gi0/3,10.0.0.9,255.255.255.252,10.0.0.8/30,TRANSIT,SW-DIST2,Gi0/0,Routed campus uplink,"Use no switchport + IP if using multilayer switch image; IOSvL2 is L2-only, so configure trunk/router-on-a-stick instead or replace with IOL-L3."
+SW-DIST2,Gi0/0,N/A,N/A,10.0.0.8/30,TRANSIT,R-HQ1,Gi0/3,L2 switch uplink,"IOSvL2 is Layer 2 only; use trunking and router-on-a-stick, or substitute a supported L3 switch node."
+R-HQ2,Gi0/2,10.0.0.13,255.255.255.252,10.0.0.12/30,TRANSIT,SW-DIST1,Gi0/1,Routed campus uplink,"Use no switchport + IP if using multilayer switch image; IOSvL2 is L2-only, so configure trunk/router-on-a-stick instead or replace with IOL-L3."
+SW-DIST1,Gi0/1,N/A,N/A,10.0.0.12/30,TRANSIT,R-HQ2,Gi0/2,L2 switch uplink,"IOSvL2 is Layer 2 only; use trunking and router-on-a-stick, or substitute a supported L3 switch node."
+R-HQ2,Gi0/3,10.0.0.17,255.255.255.252,10.0.0.16/30,TRANSIT,SW-DIST2,Gi0/1,Routed campus uplink,"Use no switchport + IP if using multilayer switch image; IOSvL2 is L2-only, so configure trunk/router-on-a-stick instead or replace with IOL-L3."
+SW-DIST2,Gi0/1,N/A,N/A,10.0.0.16/30,TRANSIT,R-HQ2,Gi0/3,L2 switch uplink,"IOSvL2 is Layer 2 only; use trunking and router-on-a-stick, or substitute a supported L3 switch node."
+R-BR1,Gi0/0,10.0.1.1,255.255.255.252,10.0.1.0/30,WAN,SW-BR1,Gi0/0,Branch 1 router uplink,
+R-BR2,Gi0/0,10.0.2.1,255.255.255.252,10.0.2.0/30,WAN,SW-BR2,Gi0/0,Branch 2 router uplink,
+R-HQ1,G0/?.10,10.10.10.1,255.255.255.0,10.10.10.0/24,10,Logical VLAN gateway,N/A,Gateway for USERS,Configure as 802.1Q subinterface after selecting the trunk interface.
+R-HQ1,G0/?.20,10.10.20.1,255.255.255.0,10.10.20.0/24,20,Logical VLAN gateway,N/A,Gateway for VOICE,Configure as 802.1Q subinterface after selecting the trunk interface.
+R-HQ1,G0/?.30,10.10.30.1,255.255.255.0,10.10.30.0/24,30,Logical VLAN gateway,N/A,Gateway for GUEST,Configure as 802.1Q subinterface after selecting the trunk interface.
+R-HQ1,G0/?.40,10.10.40.1,255.255.255.0,10.10.40.0/24,40,Logical VLAN gateway,N/A,Gateway for SERVERS,Configure as 802.1Q subinterface after selecting the trunk interface.
+R-BR1,G0/?.110,10.11.10.1,255.255.255.0,10.11.10.0/24,110,Logical VLAN gateway,N/A,Gateway for BR1-USERS,Configure as 802.1Q subinterface after selecting the trunk interface.
+R-BR2,G0/?.120,10.12.10.1,255.255.255.0,10.12.10.0/24,120,Logical VLAN gateway,N/A,Gateway for BR2-USERS,Configure as 802.1Q subinterface after selecting the trunk interface.
+PC-USER1,Ethernet0,10.10.10.11,255.255.255.0,10.10.10.0/24,10,SW-ACC1,Gi0/1,User endpoint,Gateway = first usable address in subnet.
+PC-USER2,Ethernet0,10.10.10.12,255.255.255.0,10.10.10.0/24,10,SW-ACC1,Gi0/2,User endpoint,Gateway = first usable address in subnet.
+PC-VOICE,Ethernet0,10.10.20.21,255.255.255.0,10.10.20.0/24,20,SW-ACC2,Gi0/1,Voice test endpoint,Gateway = first usable address in subnet.
+PC-GUEST,Ethernet0,10.10.30.21,255.255.255.0,10.10.30.0/24,30,SW-ACC2,Gi0/2,Guest endpoint,Gateway = first usable address in subnet.
+PC-BR1,Ethernet0,10.11.10.11,255.255.255.0,10.11.10.0/24,110,SW-BR1,Gi0/1,Branch 1 endpoint,Gateway = first usable address in subnet.
+PC-BR2,Ethernet0,10.12.10.11,255.255.255.0,10.12.10.0/24,120,SW-BR2,Gi0/1,Branch 2 endpoint,Gateway = first usable address in subnet.
+SRV-APP,eth0,10.10.40.10,255.255.255.0,10.10.40.0/24,40,SW-SRV,Gi0/1,Application server,Gateway = first usable address in subnet.
+SRV-DNS,eth0,10.10.40.11,255.255.255.0,10.10.40.0/24,40,SW-SRV,Gi0/2,DNS / services server,Gateway = first usable address in subnet.
+SW-DIST1,Vlan99,10.10.99.11,255.255.255.0,10.10.99.0/24,99,Management VLAN,N/A,Switch management SVI,Configure VLAN 99 and default-gateway/routing as appropriate.
+SW-DIST2,Vlan99,10.10.99.12,255.255.255.0,10.10.99.0/24,99,Management VLAN,N/A,Switch management SVI,Configure VLAN 99 and default-gateway/routing as appropriate.
+SW-ACC1,Vlan99,10.10.99.21,255.255.255.0,10.10.99.0/24,99,Management VLAN,N/A,Switch management SVI,Configure VLAN 99 and default-gateway/routing as appropriate.
+SW-ACC2,Vlan99,10.10.99.22,255.255.255.0,10.10.99.0/24,99,Management VLAN,N/A,Switch management SVI,Configure VLAN 99 and default-gateway/routing as appropriate.
+SW-BR1,Vlan99,10.11.99.21,255.255.255.0,10.11.99.0/24,99,Management VLAN,N/A,Switch management SVI,Configure VLAN 99 and default-gateway/routing as appropriate.
+SW-BR2,Vlan99,10.12.99.21,255.255.255.0,10.12.99.0/24,99,Management VLAN,N/A,Switch management SVI,Configure VLAN 99 and default-gateway/routing as appropriate.
+SW-SRV,Vlan99,10.10.99.31,255.255.255.0,10.10.99.0/24,99,Management VLAN,N/A,Switch management SVI,Configure VLAN 99 and default-gateway/routing as appropriate.
+SW-DIST1,Gi0/2,N/A,N/A,N/A,N/A,SW-DIST2,Gi0/2,Distribution interconnect,
+SW-DIST2,Gi0/2,N/A,N/A,N/A,N/A,SW-DIST1,Gi0/2,Distribution interconnect,
+SW-DIST1,Gi0/3,N/A,N/A,N/A,N/A,SW-ACC1,Gi0/0,DIST1 to Access 1,
+SW-ACC1,Gi0/0,N/A,N/A,N/A,N/A,SW-DIST1,Gi0/3,DIST1 to Access 1,
+SW-DIST2,Gi0/3,N/A,N/A,N/A,N/A,SW-ACC2,Gi0/0,DIST2 to Access 2,
+SW-ACC2,Gi0/0,N/A,N/A,N/A,N/A,SW-DIST2,Gi0/3,DIST2 to Access 2,
+SW-BR1,Gi0/0,N/A,N/A,N/A,N/A,R-BR1,Gi0/0,Branch 1 router uplink,
+SW-BR2,Gi0/0,N/A,N/A,N/A,N/A,R-BR2,Gi0/0,Branch 2 router uplink,
+SW-ACC1,Gi0/1,N/A,N/A,N/A,N/A,PC-USER1,Ethernet0,User 1,
+SW-ACC1,Gi0/2,N/A,N/A,N/A,N/A,PC-USER2,Ethernet0,User 2,
+SW-ACC2,Gi0/1,N/A,N/A,N/A,N/A,PC-VOICE,Ethernet0,Voice endpoint,
+SW-ACC2,Gi0/2,N/A,N/A,N/A,N/A,PC-GUEST,Ethernet0,Guest endpoint,
+SW-BR1,Gi0/1,N/A,N/A,N/A,N/A,PC-BR1,Ethernet0,Branch 1 endpoint,
+SW-BR2,Gi0/1,N/A,N/A,N/A,N/A,PC-BR2,Ethernet0,Branch 2 endpoint,
+SW-SRV,Gi0/0,N/A,N/A,N/A,N/A,SW-DIST2,Gi0/0,Distribution 2 to server access,
+SW-SRV,Gi0/1,N/A,N/A,N/A,N/A,SRV-APP,eth0,Application server,
+SW-SRV,Gi0/2,N/A,N/A,N/A,N/A,SRV-DNS,eth0,DNS server,
