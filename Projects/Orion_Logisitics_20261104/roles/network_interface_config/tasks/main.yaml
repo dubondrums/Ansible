@@ -1,24 +1,34 @@
 ---
-- name: Configure router interfaces and subinterfaces
+# 1. Native module handles 'no shutdown' idempotently
+- name: Ensure all required interfaces are enabled
+  cisco.ios.ios_interfaces:
+    config:
+      - name: "{{ item.name }}"
+        enabled: true
+  loop: "{{ site_interfaces[inventory_hostname].interfaces }}"
+  when: inventory_hostname in site_interfaces
+
+# 2. Configure L3 attributes line by line
+- name: Configure router and switch interfaces and subinterfaces
   cisco.ios.ios_config:
     lines:
+      - "{{ 'no switchport' if item.routed is defined and item.routed else omit }}"
       - "{{ 'encapsulation dot1q ' ~ item.vlan_id if item.vlan_id is defined else omit }}"
       - "{{ 'description ' ~ item.description if item.description is defined else omit }}"
       - "{{ 'tunnel source ' ~ item.tunnel_source if item.tunnel_source is defined else omit }}"
       - "{{ 'tunnel destination ' ~ item.tunnel_destination if item.tunnel_destination is defined else omit }}"
       - "{{ 'ip address ' ~ item.ip_address ~ ' ' ~ item.netmask if item.ip_address is defined else omit }}"
-      - no shutdown
     parents: "interface {{ item.name }}"
     match: line
   loop: "{{ site_interfaces[inventory_hostname].interfaces }}"
   when: inventory_hostname in site_interfaces and not item.name.startswith('Loopback')
 
+# 3. Configure Loopbacks line by line
 - name: Configure router loopback interfaces
   cisco.ios.ios_config:
     lines:
       - "{{ 'description ' ~ item.description if item.description is defined else omit }}"
       - "ip address {{ item.ip_address }} {{ item.netmask }}"
-      - no shutdown
     parents: "interface {{ item.name }}"
     match: line
   loop: "{{ site_interfaces[inventory_hostname].interfaces }}"

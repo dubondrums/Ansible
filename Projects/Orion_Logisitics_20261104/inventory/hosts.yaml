@@ -41,6 +41,7 @@ all:
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco123
+      ansible_ssh_extra_args: '-o MACs=+hmac-sha1,hmac-sha1-96'
 
     SW-DIST2:  
       ansible_host: 10.10.20.16

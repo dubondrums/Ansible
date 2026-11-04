@@ -153,4 +153,48 @@ site_interfaces:
         description: "Loopback interface for R-BR1"
         ip_address: 5.5.5.5
         netmask: 255.255.255.255
+
+  ## Switches
+
+    SW-DIST1:
+      interfaces:
+      - name: GigabitEthernet0/0
+        description: "Uplink to R-HQ1"
+        ip_address: 10.0.0.6
+        netmask: 255.255.255.252
+        routed: true
+      - name: GigabitEthernet0/1
+        description: "Uplink to R-HQ2"
+        ip_address: 10.0.0.14
+        netmask: 255.255.255.252
+        routed: true
+      - name: GigabitEthernet0/2
+        description: "Trunk link to SW-DIST2"
+        mode: trunk
+        allowed_vlans: "10,20,30,40"
+      - name: GigabitEthernet0/3
+        description: "Trunk link to SW-ACC1"
+        mode: trunk
+        allowed_vlans: "10,20,30,40"
+      - name: Vlan10
+        description: "Users SVI"
+        ip_address: "10.1.10.5"
+        netmask: "255.255.255.0"
+      - name: Vlan20
+        description: "Voice SVI"
+        ip_address: "10.1.20.5"
+        netmask: "255.255.255.0"
+      - name: Vlan30
+        description: "Guest SVI"
+        ip_address: "10.1.30.5"
+        netmask: "255.255.255.0"
+      - name: Vlan40
+        description: "Servers SVI"
+        ip_address: "10.1.40.5"
+        netmask: "255.255.255.0"
+      - name: Loopback1
+        description: "Loopback interface for SW-DIST1"
+        ip_address: 6.6.6.6
+        netmask: 255.255.255.255
+      
       
