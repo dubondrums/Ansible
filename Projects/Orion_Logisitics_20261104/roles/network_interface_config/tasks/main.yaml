@@ -23,11 +23,19 @@
 - name: Configure router and switch interfaces and subinterfaces
   cisco.ios.ios_config:
     lines:
+      # 1. Handle Routed Switch Ports
       - "{{ 'no switchport' if item.routed is defined and item.routed else omit }}"
+      
+      # 2. Handle Trunk Ports (Matches 'mode: trunk' and 'allowed_vlans')
+      - "{{ 'switchport mode ' ~ item.mode if item.mode is defined else omit }}"
+      - "{{ 'switchport trunk allowed vlan ' ~ item.allowed_vlans if item.allowed_vlans is defined else omit }}"
+      
+      # 3. Handle Access Ports (Matches 'access_vlan')
+      - "{{ 'switchport access vlan ' ~ item.access_vlan if item.mode is defined and item.mode == 'access' and item.access_vlan is defined else omit }}"
+      
+      # 4. Global Layer 3 features
       - "{{ 'encapsulation dot1q ' ~ item.vlan_id if item.vlan_id is defined else omit }}"
       - "{{ 'description ' ~ item.description if item.description is defined else omit }}"
-      - "{{ 'tunnel source ' ~ item.tunnel_source if item.tunnel_source is defined else omit }}"
-      - "{{ 'tunnel destination ' ~ item.tunnel_destination if item.tunnel_destination is defined else omit }}"
       - "{{ 'ip address ' ~ item.ip_address ~ ' ' ~ item.netmask if item.ip_address is defined else omit }}"
     parents: "interface {{ item.name }}"
     match: line

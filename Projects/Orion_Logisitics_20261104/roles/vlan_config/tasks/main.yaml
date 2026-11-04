@@ -10,4 +10,4 @@
         name: Guest
       - vlan_id: 40
         name: Servers
-  when: inventory_hostname startswith('SW-') # Run on all your switches
+  when: inventory_hostname is match("^SW-")
