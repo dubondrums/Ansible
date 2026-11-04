@@ -6,4 +6,5 @@
   gather_facts: false
   
   roles:
+    - vlan_config
     - network_interface_config

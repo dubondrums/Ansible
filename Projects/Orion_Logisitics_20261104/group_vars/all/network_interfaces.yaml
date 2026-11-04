@@ -238,5 +238,34 @@ site_interfaces:
       - name: Loopback1
         description: "Loopback interface for SW-DIST1"
         ip_address: 7.7.7.7
-        netmask: 255.255.255.255  
+        netmask: 255.255.255.255
+
+    SW-ACC1:
+      interfaces:
+      - name: GigabitEthernet0/0
+        description: "Trunk link to SW-DIST1"
+        mode: trunk
+        allowed_vlans: "10,20,30,40"
+      - name: GigabitEthernet0/1
+        description: "Access Port - USER Vlan 10"
+        mode: access
+        access_vlan: 10
+      - name: GigabitEthernet0/2
+        description: "Access Port - USER Vlan 10"
+        mode: access
+        access_vlan: 10
       
+    SW-ACC2:
+      interfaces:
+      - name: GigabitEthernet0/0
+        description: "Trunk link to SW-DIST2"
+        mode: trunk
+        allowed_vlans: "10,20,30,40"
+      - name: GigabitEthernet0/1
+        description: "Access Port - Voice Vlan 20"
+        mode: access
+        access_vlan: 20
+      - name: GigabitEthernet0/2
+        description: "Access Port - Guest Vlan 30"
+        mode: access
+        access_vlan: 30

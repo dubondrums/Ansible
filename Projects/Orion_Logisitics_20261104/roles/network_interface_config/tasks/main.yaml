@@ -1,10 +1,14 @@
 ---
-# 1. Enable IP Routing on switches if global_routing is defined and true
+# 1. Global Layer 3 Switch Activation
 - name: Enable global IP routing on multilayer switches
   cisco.ios.ios_config:
     lines:
       - ip routing
-  when: global_routing is defined and global_routing
+  when: 
+    - inventory_hostname in site_interfaces
+    - site_interfaces[inventory_hostname].global_routing is defined
+    - site_interfaces[inventory_hostname].global_routing
+
 
 # 2. Native module handles 'no shutdown' idempotently  
 - name: Ensure all required interfaces are enabled

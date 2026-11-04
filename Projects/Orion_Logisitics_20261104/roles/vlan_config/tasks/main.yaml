@@ -1,0 +1,13 @@
+---
+- name: Ensure VLANs are configured on switches
+  cisco.ios.ios_vlans:
+    config:
+      - vlan_id: 10
+        name: MGMT
+      - vlan_id: 20
+        name: Corp
+      - vlan_id: 30
+        name: Guest
+      - vlan_id: 40
+        name: Servers
+  when: inventory_hostname startswith('SW-') # Run on all your switches
