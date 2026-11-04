@@ -5,7 +5,7 @@ site_interfaces:
     
 # Routers    
     
-    ISP_ROUTER:
+    R-ISP:
       interfaces:
       - name: GigabitEthernet0/0
         description: "Uplink to R-HQ1"
@@ -24,14 +24,14 @@ site_interfaces:
         ip_address: 198.51.100.1
         netmask: 255.255.255.252
       - name: Loopback1
-        description: "Loopback interface for ISP_ROUTER"
+        description: "Loopback interface for R-ISP"
         ip_address: 1.1.1.1
         netmask: 255.255.255.255
 
-    CORE_ROUTER:
+    R-HQ1:
       interfaces:
       - name: GigabitEthernet0/0
-        description: "Uplink to ISP_ROUTER"
+        description: "Uplink to R-ISP"
         ip_address: 198.51.100.2
         netmask: 255.255.255.252
       - name: GigabitEthernet0/1
