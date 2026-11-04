@@ -1,5 +1,12 @@
 ---
-# 1. Native module handles 'no shutdown' idempotently
+# 1. Enable IP Routing on switches if global_routing is defined and true
+- name: Enable global IP routing on multilayer switches
+  cisco.ios.ios_config:
+    lines:
+      - ip routing
+  when: global_routing is defined and global_routing
+
+# 2. Native module handles 'no shutdown' idempotently  
 - name: Ensure all required interfaces are enabled
   cisco.ios.ios_interfaces:
     config:
@@ -8,7 +15,7 @@
   loop: "{{ site_interfaces[inventory_hostname].interfaces }}"
   when: inventory_hostname in site_interfaces
 
-# 2. Configure L3 attributes line by line
+# 3. Configure L3 attributes line by line
 - name: Configure router and switch interfaces and subinterfaces
   cisco.ios.ios_config:
     lines:
@@ -23,7 +30,7 @@
   loop: "{{ site_interfaces[inventory_hostname].interfaces }}"
   when: inventory_hostname in site_interfaces and not item.name.startswith('Loopback')
 
-# 3. Configure Loopbacks line by line
+# 4. Configure Loopbacks line by line
 - name: Configure router loopback interfaces
   cisco.ios.ios_config:
     lines:

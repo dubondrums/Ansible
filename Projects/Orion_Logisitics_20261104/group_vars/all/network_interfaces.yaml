@@ -157,6 +157,7 @@ site_interfaces:
   ## Switches
 
     SW-DIST1:
+      global_routing: true
       interfaces:
       - name: GigabitEthernet0/0
         description: "Uplink to R-HQ1"
@@ -178,23 +179,64 @@ site_interfaces:
         allowed_vlans: "10,20,30,40"
       - name: Vlan10
         description: "Users SVI"
-        ip_address: "10.1.10.5"
+        ip_address: "10.10.10.2"
         netmask: "255.255.255.0"
       - name: Vlan20
         description: "Voice SVI"
-        ip_address: "10.1.20.5"
+        ip_address: "10.10.20.2"
         netmask: "255.255.255.0"
       - name: Vlan30
         description: "Guest SVI"
-        ip_address: "10.1.30.5"
+        ip_address: "10.10.30.2"
         netmask: "255.255.255.0"
       - name: Vlan40
         description: "Servers SVI"
-        ip_address: "10.1.40.5"
+        ip_address: "10.10.40.2"
         netmask: "255.255.255.0"
       - name: Loopback1
         description: "Loopback interface for SW-DIST1"
         ip_address: 6.6.6.6
         netmask: 255.255.255.255
       
+    SW-DIST2:
+      global_routing: true
+      interfaces:
+      - name: GigabitEthernet0/0
+        description: "Uplink to R-HQ1"
+        ip_address: 10.0.0.10
+        netmask: 255.255.255.252
+        routed: true
+      - name: GigabitEthernet0/1
+        description: "Uplink to R-HQ2"
+        ip_address: 10.0.0.18
+        netmask: 255.255.255.252
+        routed: true
+      - name: GigabitEthernet0/2
+        description: "Trunk link to SW-DIST1"
+        mode: trunk
+        allowed_vlans: "10,20,30,40"
+      - name: GigabitEthernet0/3
+        description: "Trunk link to SW-ACC2"
+        mode: trunk
+        allowed_vlans: "10,20,30,40"
+      - name: Vlan10
+        description: "Users SVI"
+        ip_address: "10.10.10.3"
+        netmask: "255.255.255.0"
+      - name: Vlan20
+        description: "Voice SVI"
+        ip_address: "10.10.20.3"
+        netmask: "255.255.255.0"
+      - name: Vlan30
+        description: "Guest SVI"
+        ip_address: "10.10.30.3"
+        netmask: "255.255.255.0"
+      - name: Vlan40
+        description: "Servers SVI"
+        ip_address: "10.10.40.3"
+        netmask: "255.255.255.0"
+      - name: Loopback1
+        description: "Loopback interface for SW-DIST1"
+        ip_address: 7.7.7.7
+        netmask: 255.255.255.255  
       
