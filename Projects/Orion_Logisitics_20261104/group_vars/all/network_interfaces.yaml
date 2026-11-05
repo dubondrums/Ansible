@@ -269,3 +269,43 @@ site_interfaces:
         description: "Access Port - Guest Vlan 30"
         mode: access
         access_vlan: 30
+
+    SW-BR1:
+      interfaces:
+      - name: GigabitEthernet0/0
+        description: "Trunk link to R-BR1"
+        mode: trunk
+        allowed_vlans: "10,20,30,40,110"
+        native_vlan: 110
+      - name: GigabitEthernet0/1
+        description: "Access Port - PC-BR1"
+        mode: access
+        access_vlan: 110
+
+    SW-BR2:
+      interfaces:
+      - name: GigabitEthernet0/0
+        description: "Trunk link to R-BR2"
+        mode: trunk
+        allowed_vlans: "10,20,30,40,120"
+        native_vlan: 120
+      - name: GigabitEthernet0/1
+        description: "Access Port - PC-BR2"
+        mode: access
+        access_vlan: 120
+     
+    SW-SRV:
+      interfaces:
+      - name: GigabitEthernet0/0
+        description: "Trunk link to SW-DIST2"
+        mode: trunk
+        allowed_vlans: "10,20,30,40"
+        native_vlan: 120
+      - name: GigabitEthernet0/1
+        description: "Access Port - SRV-APP"
+        mode: access
+        access_vlan: 40
+      - name: GigabitEthernet0/2
+        description: "Access Port - SRV-USER"
+        mode: access
+        access_vlan: 10

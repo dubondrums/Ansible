@@ -10,4 +10,8 @@
         name: Guest
       - vlan_id: 40
         name: Servers
+      - vlan_id: 110
+        name: Branch 1 User
+      - vlan_id: 120
+        name: Branch 2 User
   when: inventory_hostname is match("^SW-")
