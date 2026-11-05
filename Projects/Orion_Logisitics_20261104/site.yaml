@@ -8,3 +8,4 @@
   roles:
     - vlan_config
     - network_interface_config
+    - ospf_config

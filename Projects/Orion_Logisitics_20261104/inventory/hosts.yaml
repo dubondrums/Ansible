@@ -41,7 +41,7 @@ all:
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco123
-      ansible_ssh_extra_args: '-o MACs=+hmac-sha1,hmac-sha1-96'
+      ansible_network_cli_ssh_type: paramiko
 
     SW-DIST2:  
       ansible_host: 10.10.20.16
@@ -49,6 +49,7 @@ all:
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco123
+      ansible_network_cli_ssh_type: paramiko
 
     SW-ACC1:  
       ansible_host: 10.10.20.17
@@ -56,6 +57,7 @@ all:
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco123
+      ansible_network_cli_ssh_type: paramiko
 
     SW-ACC2:  
       ansible_host: 10.10.20.18
@@ -63,6 +65,7 @@ all:
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco123
+      ansible_network_cli_ssh_type: paramiko
 
     SW-BR1:  
       ansible_host: 10.10.20.19
@@ -70,6 +73,7 @@ all:
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco123
+      ansible_network_cli_ssh_type: paramiko
     
     SW-BR2:  
       ansible_host: 10.10.20.20
@@ -77,6 +81,7 @@ all:
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco123
+      ansible_network_cli_ssh_type: paramiko
 
     SW-SRV:  
       ansible_host: 10.10.20.21
@@ -84,3 +89,4 @@ all:
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco123
+      ansible_network_cli_ssh_type: paramiko

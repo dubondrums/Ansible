@@ -28,6 +28,10 @@ site_interfaces:
         ip_address: 1.1.1.1
         netmask: 255.255.255.255
 
+      ospf:
+        ospf_process_id: 1
+        router_id: 1.1.1.1
+
     R-HQ1:
       interfaces:
       - name: GigabitEthernet0/0
@@ -70,7 +74,9 @@ site_interfaces:
         description: "Loopback interface for R-HQ1"
         ip_address: 2.2.2.2
         netmask: 255.255.255.255
-      
+      ospf:
+        ospf_process_id: 1
+        router_id: 2.2.2.2
     R-HQ2:
       interfaces:
       - name: GigabitEthernet0/0
@@ -113,7 +119,10 @@ site_interfaces:
         description: "Loopback interface for R-HQ2"
         ip_address: 3.3.3.3
         netmask: 255.255.255.255
-
+      ospf:
+        ospf_process_id: 1
+        router_id: 3.3.3.3
+    
     R-BR1:
       interfaces:
       - name: GigabitEthernet0/0
@@ -133,6 +142,9 @@ site_interfaces:
         description: "Loopback interface for R-BR1"
         ip_address: 4.4.4.4
         netmask: 255.255.255.255
+      ospf:
+        ospf_process_id: 1
+        router_id: 4.4.4.4
 
     R-BR2:
       interfaces:
@@ -153,6 +165,9 @@ site_interfaces:
         description: "Loopback interface for R-BR1"
         ip_address: 5.5.5.5
         netmask: 255.255.255.255
+      ospf:
+        ospf_process_id: 1
+        router_id: 5.5.5.5
 
   ## Switches
 
@@ -197,7 +212,10 @@ site_interfaces:
         description: "Loopback interface for SW-DIST1"
         ip_address: 6.6.6.6
         netmask: 255.255.255.255
-      
+      ospf:
+        ospf_process_id: 1
+        router_id: 6.6.6.6
+
     SW-DIST2:
       global_routing: true
       interfaces:
@@ -239,6 +257,9 @@ site_interfaces:
         description: "Loopback interface for SW-DIST1"
         ip_address: 7.7.7.7
         netmask: 255.255.255.255
+      ospf:
+        ospf_process_id: 1
+        router_id: 7.7.7.7
 
     SW-ACC1:
       interfaces:
