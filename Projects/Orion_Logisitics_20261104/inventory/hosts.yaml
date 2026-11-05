@@ -4,31 +4,31 @@ all:
   hosts:
     R-ISP:
       ansible_host: 10.10.20.10
-      ansible_connection: ansible.builtin.network_cli
+      ansible_connection: ansible.netcommon.network_cli
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco
     R-HQ1:
       ansible_host: 10.10.20.11
-      ansible_connection: ansible.builtin.network_cli
+      ansible_connection: ansible.netcommon.network_cli
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco123
     R-HQ2:
       ansible_host: 10.10.20.12
-      ansible_connection: ansible.builtin.network_cli
+      ansible_connection: ansible.netcommon.network_cli
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco123
     R-BR1:
       ansible_host: 10.10.20.13
-      ansible_connection: ansible.builtin.network_cli
+      ansible_connection: ansible.netcommon.network_cli
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco123
     R-BR2:
       ansible_host: 10.10.20.14
-      ansible_connection: ansible.builtin.network_cli
+      ansible_connection: ansible.netcommon.network_cli
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco123
@@ -37,7 +37,7 @@ all:
 
     SW-DIST1:
       ansible_host: 10.10.20.15
-      ansible_connection: ansible.builtin.network_cli
+      ansible_connection: ansible.netcommon.network_cli
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco123
@@ -45,7 +45,7 @@ all:
 
     SW-DIST2:  
       ansible_host: 10.10.20.16
-      ansible_connection: ansible.builtin.network_cli
+      ansible_connection: ansible.netcommon.network_cli
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco123
@@ -53,7 +53,7 @@ all:
 
     SW-ACC1:  
       ansible_host: 10.10.20.17
-      ansible_connection: ansible.builtin.network_cli
+      ansible_connection: ansible.netcommon.network_cli
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco123
@@ -61,7 +61,7 @@ all:
 
     SW-ACC2:  
       ansible_host: 10.10.20.18
-      ansible_connection: ansible.builtin.network_cli
+      ansible_connection: ansible.netcommon.network_cli
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco123
@@ -69,7 +69,7 @@ all:
 
     SW-BR1:  
       ansible_host: 10.10.20.19
-      ansible_connection: ansible.builtin.network_cli
+      ansible_connection: ansible.netcommon.network_cli
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco123
@@ -77,7 +77,7 @@ all:
     
     SW-BR2:  
       ansible_host: 10.10.20.20
-      ansible_connection: ansible.builtin.network_cli
+      ansible_connection: ansible.netcommon.network_cli
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco123
@@ -85,7 +85,7 @@ all:
 
     SW-SRV:  
       ansible_host: 10.10.20.21
-      ansible_connection: ansible.builtin.network_cli
+      ansible_connection: ansible.netcommon.network_cli
       ansible_network_os: cisco.ios.ios
       ansible_user: chris
       ansible_password: cisco123
