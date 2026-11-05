@@ -1,7 +1,7 @@
 ---
 - name: Ensure VLANs are configured on switches
-  cisco.ios.ios_config:
-    lines:
+  cisco.ios.ios_vlans:
+    config:
       - vlan_id: 10
         name: MGMT
       - vlan_id: 20
@@ -14,4 +14,5 @@
         name: Branch 1 User
       - vlan_id: 120
         name: Branch 2 User
+    state: merged
   when: inventory_hostname is match("^SW-")

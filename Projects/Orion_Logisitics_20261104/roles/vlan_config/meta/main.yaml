@@ -1,0 +1,14 @@
+---
+
+galaxy_info:
+  author: Chris Williams
+  description: VLAN configuration role for Cisco switches
+  company: Orion Logistics
+  license: MIT
+  min_ansible_version: "2.9"
+
+collections:
+  - ansible.netcommon
+  - cisco.ios
+
+dependencies: []
