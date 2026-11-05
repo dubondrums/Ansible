@@ -1,11 +1,21 @@
 ---
-# Main entrypoint playbook for Orion Logisitics
+# Main entrypoint playbook for Orion Logistics
 
-- name: Deploy configurations to hosts
-  hosts: all
+- name: Deploy configurations to switches
+  hosts: switches
   gather_facts: false
+  connection: ansible.netcommon.network_cli
   
   roles:
     - vlan_config
+    - network_interface_config
+    - ospf_config
+
+- name: Deploy configurations to routers
+  hosts: routers
+  gather_facts: false
+  connection: ansible.netcommon.network_cli
+  
+  roles:
     - network_interface_config
     - ospf_config

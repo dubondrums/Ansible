@@ -1,92 +1,48 @@
 ---
 
 all:
-  hosts:
-    R-ISP:
-      ansible_host: 10.10.20.10
-      ansible_connection: ansible.netcommon.network_cli
-      ansible_network_os: cisco.ios.ios
-      ansible_user: chris
-      ansible_password: cisco
-    R-HQ1:
-      ansible_host: 10.10.20.11
-      ansible_connection: ansible.netcommon.network_cli
-      ansible_network_os: cisco.ios.ios
-      ansible_user: chris
-      ansible_password: cisco123
-    R-HQ2:
-      ansible_host: 10.10.20.12
-      ansible_connection: ansible.netcommon.network_cli
-      ansible_network_os: cisco.ios.ios
-      ansible_user: chris
-      ansible_password: cisco123
-    R-BR1:
-      ansible_host: 10.10.20.13
-      ansible_connection: ansible.netcommon.network_cli
-      ansible_network_os: cisco.ios.ios
-      ansible_user: chris
-      ansible_password: cisco123
-    R-BR2:
-      ansible_host: 10.10.20.14
-      ansible_connection: ansible.netcommon.network_cli
-      ansible_network_os: cisco.ios.ios
-      ansible_user: chris
-      ansible_password: cisco123
+  children:
+    routers:
+      hosts:
+        R-ISP:
+          ansible_host: 10.10.20.10
+        R-HQ1:
+          ansible_host: 10.10.20.11
+        R-HQ2:
+          ansible_host: 10.10.20.12
+        R-BR1:
+          ansible_host: 10.10.20.13
+        R-BR2:
+          ansible_host: 10.10.20.14
+      vars:
+        ansible_connection: ansible.netcommon.network_cli
+        ansible_network_os: cisco.ios
+        ansible_user: chris
+        ansible_password: cisco123
 
 # Switches
 
-    SW-DIST1:
-      ansible_host: 10.10.20.15
-      ansible_connection: ansible.netcommon.network_cli
-      ansible_network_os: cisco.ios.ios
-      ansible_user: chris
-      ansible_password: cisco123
-      ansible_network_cli_ssh_type: paramiko
-
-    SW-DIST2:  
-      ansible_host: 10.10.20.16
-      ansible_connection: ansible.netcommon.network_cli
-      ansible_network_os: cisco.ios.ios
-      ansible_user: chris
-      ansible_password: cisco123
-      ansible_network_cli_ssh_type: paramiko
-
-    SW-ACC1:  
-      ansible_host: 10.10.20.17
-      ansible_connection: ansible.netcommon.network_cli
-      ansible_network_os: cisco.ios.ios
-      ansible_user: chris
-      ansible_password: cisco123
-      ansible_network_cli_ssh_type: paramiko
-
-    SW-ACC2:  
-      ansible_host: 10.10.20.18
-      ansible_connection: ansible.netcommon.network_cli
-      ansible_network_os: cisco.ios.ios
-      ansible_user: chris
-      ansible_password: cisco123
-      ansible_network_cli_ssh_type: paramiko
-
-    SW-BR1:  
-      ansible_host: 10.10.20.19
-      ansible_connection: ansible.netcommon.network_cli
-      ansible_network_os: cisco.ios.ios
-      ansible_user: chris
-      ansible_password: cisco123
-      ansible_network_cli_ssh_type: paramiko
-    
-    SW-BR2:  
-      ansible_host: 10.10.20.20
-      ansible_connection: ansible.netcommon.network_cli
-      ansible_network_os: cisco.ios.ios
-      ansible_user: chris
-      ansible_password: cisco123
-      ansible_network_cli_ssh_type: paramiko
-
-    SW-SRV:  
-      ansible_host: 10.10.20.21
-      ansible_connection: ansible.netcommon.network_cli
-      ansible_network_os: cisco.ios.ios
-      ansible_user: chris
-      ansible_password: cisco123
-      ansible_network_cli_ssh_type: paramiko
+    switches:
+      vars:
+        ansible_connection: ansible.netcommon.network_cli
+        ansible_network_os: cisco.ios
+        ansible_user: chris
+        ansible_password: cisco123
+        ansible_network_cli_ssh_type: paramiko
+        ansible_connect_timeout: 60
+        ansible_command_timeout: 60
+      hosts:
+        SW-DIST1:
+          ansible_host: 10.10.20.15
+        SW-DIST2:
+          ansible_host: 10.10.20.16
+        SW-ACC1:
+          ansible_host: 10.10.20.17
+        SW-ACC2:
+          ansible_host: 10.10.20.18
+        SW-BR1:
+          ansible_host: 10.10.20.19
+        SW-BR2:
+          ansible_host: 10.10.20.20
+        SW-SRV:
+          ansible_host: 10.10.20.21

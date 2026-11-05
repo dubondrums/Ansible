@@ -1,7 +1,7 @@
 ---
 - name: Ensure VLANs are configured on switches
-  cisco.ios.ios_vlans:
-    config:
+  cisco.ios.ios_config:
+    lines:
       - vlan_id: 10
         name: MGMT
       - vlan_id: 20

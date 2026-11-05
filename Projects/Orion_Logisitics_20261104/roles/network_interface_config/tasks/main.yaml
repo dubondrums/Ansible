@@ -9,13 +9,13 @@
     - site_interfaces[inventory_hostname].global_routing is defined
     - site_interfaces[inventory_hostname].global_routing
 
-
-# 2. Native module handles 'no shutdown' idempotently  
+# 2. Native module handles 'no shutdown' idempotently
 - name: Ensure all required interfaces are enabled
-  cisco.ios.ios_interfaces:
-    config:
-      - name: "{{ item.name }}"
-        enabled: true
+  cisco.ios.ios_config:
+    lines:
+      - no shutdown
+    parents:
+      - "interface {{ item.name }}"
   loop: "{{ site_interfaces[inventory_hostname].interfaces }}"
   when: inventory_hostname in site_interfaces
 
