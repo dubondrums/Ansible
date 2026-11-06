@@ -23,7 +23,7 @@
 - name: Configure router and switch interfaces and subinterfaces
   cisco.ios.ios_config:
     lines:
-     # 1. Handle Routed Switch Ports
+    # 1. Handle Routed Switch Ports
       - "{{ 'no switchport' if item.routed is defined and item.routed else omit }}"
       
       # 2. FIX: Hardcode dot1q encapsulation right before changing to trunk mode
