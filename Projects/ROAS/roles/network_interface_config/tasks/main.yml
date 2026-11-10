@@ -19,33 +19,44 @@
   loop: "{{ site_interfaces[inventory_hostname].interfaces }}"
   when: inventory_hostname in site_interfaces
 
-# 3. Configure L3 attributes line by line
-- name: Configure router and switch interfaces and subinterfaces
+# 3. Configure Layer 2 Switch Access and Trunk Ports
+- name: Configure Layer 2 switch ports (Access and Trunks)
   cisco.ios.ios_config:
     lines:
-    # 1. Handle Routed Switch Ports
-      - "{{ 'no switchport' if item.routed is defined and item.routed else omit }}"
-      
-      # 2. FIX: Hardcode dot1q encapsulation right before changing to trunk mode
-      - "{{ 'switchport trunk encapsulation dot1q' if item.mode is defined and item.mode == 'trunk' else omit }}"
-      
-      # 3. Handle Trunk Ports 
-      - "{{ 'switchport mode ' ~ item.mode if item.mode is defined else omit }}"
-      - "{{ 'switchport trunk allowed vlan ' ~ item.allowed_vlans if item.allowed_vlans is defined else omit }}"
-      
-      # 4. Handle Access Ports 
-      - "{{ 'switchport access vlan ' ~ item.access_vlan if item.mode is defined and item.mode == 'access' and item.access_vlan is defined else omit }}"
-      
-      # 5. Global Layer 3 features & Descriptions
-      - "{{ 'encapsulation dot1q ' ~ item.vlan_id if item.vlan_id is defined else omit }}"
       - "{{ 'description ' ~ item.description if item.description is defined else omit }}"
-      - "{{ 'ip address ' ~ item.ip_address ~ ' ' ~ item.netmask if item.ip_address is defined else omit }}"
+      - "switchport mode {{ item.mode }}"
+      - "{{ 'switchport trunk encapsulation dot1q' if item.mode == 'trunk' else omit }}"
+      - "{{ 'switchport trunk allowed vlan ' ~ item.allowed_vlans if item.allowed_vlans is defined else omit }}"
+      - "{{ 'switchport access vlan ' ~ item.vlan_id if item.vlan_id is defined else omit }}"
+      - no shutdown
     parents: "interface {{ item.name }}"
     match: line
   loop: "{{ site_interfaces[inventory_hostname].interfaces }}"
-  when: inventory_hostname in site_interfaces and not item.name.startswith('Loopback')
+  when: 
+    - inventory_hostname in site_interfaces
+    - inventory_hostname is match("^SW-")
+    - item.routed is not defined or not item.routed
+    - not item.name.startswith('Loopback')
 
-# 4. Configure Loopbacks line by line
+# 4. Configure Layer 3 Router Subinterfaces & Routed Ports
+- name: Configure Layer 3 router subinterfaces and routed ports
+  cisco.ios.ios_config:
+    lines:
+      - "{{ 'description ' ~ item.description if item.description is defined else omit }}"
+      - "{{ 'no switchport' if item.routed is defined and item.routed else omit }}"
+      - "{{ 'encapsulation dot1q ' ~ item.vlan_id if item.vlan_id is defined else omit }}"
+      - "{{ 'ip address ' ~ item.ip_address ~ ' ' ~ item.netmask if item.ip_address is defined and item.netmask is defined else omit }}"
+      - no shutdown
+    parents: "interface {{ item.name }}"
+    match: line
+  loop: "{{ site_interfaces[inventory_hostname].interfaces }}"
+  when: 
+    - inventory_hostname in site_interfaces
+    - not item.name.startswith('Loopback')
+    - inventory_hostname is match("^R-")
+    - item.name is search("\\.") or (item.routed is defined and item.routed)
+
+# 5. Configure Loopbacks line by line
 - name: Configure router loopback interfaces
   cisco.ios.ios_config:
     lines:
@@ -54,4 +65,6 @@
     parents: "interface {{ item.name }}"
     match: line
   loop: "{{ site_interfaces[inventory_hostname].interfaces }}"
-  when: inventory_hostname in site_interfaces and item.name.startswith('Loopback')
+  when: 
+    - inventory_hostname in site_interfaces
+    - item.name.startswith('Loopback')

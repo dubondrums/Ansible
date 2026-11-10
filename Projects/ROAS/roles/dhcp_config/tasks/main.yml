@@ -1,13 +1,20 @@
 ---
-- name: Configure DHCP pools on Cisco IOS devices
+- name: Ensure DHCP excluded addresses are configured
   cisco.ios.ios_config:
     lines:
       - "ip dhcp excluded-address {{ item.excluded_addresses }}"
-      - "ip dhcp pool {{ item.pool_name }}"
+  loop: "{{ dhcp_configs[inventory_hostname] | default(dhcp_configs['R-ISP']) }}"
+  loop_control:
+    label: "{{ item.excluded_addresses }}"
+
+- name: Configure DHCP pools on Cisco IOS devices
+  cisco.ios.ios_config:
+    lines:
       - "network {{ item.network }} {{ item.netmask }}"
       - "default-router {{ item.default_router }}"
       - "dns-server {{ item.dns_servers }}"
-      - "lease {{ item.lease_time }}"
+      - "lease 0 0 2"
+    parents: "ip dhcp pool {{ item.pool_name }}"
   loop: "{{ dhcp_configs[inventory_hostname] | default(dhcp_configs['R-ISP']) }}"
   loop_control:
     label: "{{ item.pool_name }}"

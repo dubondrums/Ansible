@@ -21,6 +21,16 @@ site_interfaces:
         ip_address: 172.16.20.1
         netmask: 255.255.255.0
         vlan_id: 20
+      - name: GigabitEthernet0/0.30
+        description: "VLAN 30 interface for Voice"
+        ip_address: 172.16.30.1
+        netmask: 255.255.255.0
+        vlan_id: 30
+      - name: GigabitEthernet0/0.40
+        description: "VLAN 40 interface for Servers"
+        ip_address: 172.16.40.1
+        netmask: 255.255.255.0
+        vlan_id: 40
       - name: Loopback1
         description: "Loopback interface for R1"
         ip_address: 1.1.1.1
@@ -28,7 +38,7 @@ site_interfaces:
 
 # Swtiches
 
-    SW1:
+    SW-1:
       interfaces:
       - name: GigabitEthernet0/0
         description: "Trunk link to R1"
@@ -46,7 +56,7 @@ site_interfaces:
         allowed_vlans: "1,10,20,30,40"
         native_vlan: 1
 
-    SW2:
+    SW-2:
       interfaces:
       - name: GigabitEthernet0/0
         description: "Trunk link to SW1"
@@ -63,7 +73,7 @@ site_interfaces:
         mode: access
         vlan_id: 20
 
-    SW3:
+    SW-3:
       interfaces:
       - name: GigabitEthernet0/0
         description: "Trunk link to SW1"
@@ -76,6 +86,6 @@ site_interfaces:
         allowed_vlans: "1,10,20,30,40"
         native_vlan: 1
       - name: GigabitEthernet0/2
-        description: "Access Port - User Vlan 10"
+        description: "Access Port - Vlan 40"
         mode: access
-        vlan_id: 10
+        vlan_id: 40
