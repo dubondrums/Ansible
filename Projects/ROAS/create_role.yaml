@@ -1,0 +1,55 @@
+---
+- name: Create Ansible Role Structure
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_prompt:
+    - name: role_name
+      prompt: "Enter the name of the new role"
+      private: false
+
+  vars:
+    role_path: "roles/{{ role_name }}"
+
+    role_directories:
+      - tasks
+      - handlers
+      - defaults
+      - vars
+      - templates
+      - files
+      - meta
+
+    main_file_directories:
+      - tasks
+      - handlers
+      - defaults
+      - vars
+      - meta
+
+  tasks:
+    - name: Validate role name
+      ansible.builtin.assert:
+        that:
+          - role_name is match('^[a-zA-Z0-9_]+$')
+        fail_msg: "Role name must contain only letters, numbers, and underscores."
+
+    - name: Create role directories
+      ansible.builtin.file:
+        path: "{{ role_path }}/{{ item }}"
+        state: directory
+        mode: '0755'
+      loop: "{{ role_directories }}"
+
+    - name: Create main.yml files
+      ansible.builtin.copy:
+        content: "---\n"
+        dest: "{{ role_path }}/{{ item }}/main.yml"
+        force: false
+        mode: '0644'
+      loop: "{{ main_file_directories }}"
+
+    - name: Display completion message
+      ansible.builtin.debug:
+        msg: "Role '{{ role_name }}' created successfully!"

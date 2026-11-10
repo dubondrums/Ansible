@@ -1,9 +1,20 @@
 ---
-# Main entrypoint playbook for ROAS
+# Main entrypoint playbook for ROAS Config
 
-- name: Deploy configurations to hosts
-  hosts: all
+- name: Deploy configurations to switches
+  hosts: switches
   gather_facts: false
+  connection: ansible.netcommon.network_cli
   
   roles:
     - switch_vlan
+    - network_interface_config
+
+- name: Deploy configurations to routers
+  hosts: routers
+  gather_facts: false
+  connection: ansible.netcommon.network_cli
+  
+  roles:
+    - network_interface_config
+    - dhcp_config

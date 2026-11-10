@@ -1,0 +1,81 @@
+---
+#Interface and IP configs for the network devices
+
+site_interfaces:
+    
+# Routers    
+
+    R1:
+      interfaces:
+      - name: GigabitEthernet0/0
+        description: "Uplink to SW1"
+        ip_address: 172.16.1.1
+        netmask: 255.255.255.0
+      - name: GigabitEthernet0/0.10
+        description: "VLAN 10 interface for MGMT"
+        ip_address: 172.16.10.1
+        netmask: 255.255.255.0
+        vlan_id: 10
+      - name: GigabitEthernet0/0.20
+        description: "VLAN 20 interface for Corp"
+        ip_address: 172.16.20.1
+        netmask: 255.255.255.0
+        vlan_id: 20
+      - name: Loopback1
+        description: "Loopback interface for R1"
+        ip_address: 1.1.1.1
+        netmask: 255.255.255.255
+
+# Swtiches
+
+    SW1:
+      interfaces:
+      - name: GigabitEthernet0/0
+        description: "Trunk link to R1"
+        mode: trunk
+        allowed_vlans: "1,10,20,30,40"
+        native_vlan: 1
+      - name: GigabitEthernet0/1
+        description: "Trunk link to SW2"
+        mode: trunk
+        allowed_vlans: "1,10,20,30,40"
+        native_vlan: 1
+      - name: GigabitEthernet0/2
+        description: "Trunk link to SW3"
+        mode: trunk
+        allowed_vlans: "1,10,20,30,40"
+        native_vlan: 1
+
+    SW2:
+      interfaces:
+      - name: GigabitEthernet0/0
+        description: "Trunk link to SW1"
+        mode: trunk
+        allowed_vlans: "1,10,20,30,40"
+        native_vlan: 1
+      - name: GigabitEthernet0/1
+        description: "Trunk link to SW3"
+        mode: trunk
+        allowed_vlans: "1,10,20,30,40"
+        native_vlan: 1
+      - name: GigabitEthernet0/2
+        description: "Access Port - Corp Vlan 20"
+        mode: access
+        vlan_id: 20
+
+    SW3:
+      interfaces:
+      - name: GigabitEthernet0/0
+        description: "Trunk link to SW1"
+        mode: trunk
+        allowed_vlans: "1,10,20,30,40"
+        native_vlan: 1
+      - name: GigabitEthernet0/1
+        description: "Trunk link to SW2"
+        mode: trunk
+        allowed_vlans: "1,10,20,30,40"
+        native_vlan: 1
+      - name: GigabitEthernet0/2
+        description: "Access Port - User Vlan 10"
+        mode: access
+        vlan_id: 10

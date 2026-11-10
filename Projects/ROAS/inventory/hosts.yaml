@@ -1,0 +1,39 @@
+---
+
+all:
+  children:
+    routers:
+      vars:
+        ansible_connection: ansible.netcommon.network_cli
+        ansible_network_os: ios
+        ansible_user: chris
+        ansible_password: cisco123
+        ansible_become: yes            
+        ansible_become_method: enable  
+        ansible_network_cli_ssh_type: paramiko
+        ansible_connect_timeout: 60
+        ansible_command_timeout: 120
+      hosts:
+        R1:
+          ansible_host: 10.10.20.10
+
+# Switches
+
+    switches:
+      vars:
+        ansible_connection: ansible.netcommon.network_cli
+        ansible_network_os: ios
+        ansible_user: chris
+        ansible_password: cisco123
+        ansible_become: yes            # <-- Enable privilege escalation
+        ansible_become_method: enable  # <-- Use enable mode
+        ansible_network_cli_ssh_type: paramiko
+        ansible_connect_timeout: 60
+        ansible_command_timeout: 120
+      hosts:
+        SW-1:
+          ansible_host: 10.10.20.11
+        SW-2:
+          ansible_host: 10.10.20.12
+        SW-3:
+          ansible_host: 10.10.20.13
