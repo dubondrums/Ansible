@@ -1,0 +1,9 @@
+---
+# Main entrypoint playbook for ROAS
+
+- name: Deploy configurations to hosts
+  hosts: all
+  gather_facts: false
+  
+  roles:
+    - switch_vlan
