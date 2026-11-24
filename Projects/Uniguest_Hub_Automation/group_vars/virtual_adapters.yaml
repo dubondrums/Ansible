@@ -1,0 +1,17 @@
+---
+tripleplay_adapters:
+  - name: "Live Venue Main Stream"
+    adapter_class: "IpMptsAdapter"
+    adapter_id: "142"
+    multicast_ip: "239.255.1.10"
+    port: "5000"
+  - name: "Concourse Overflow Stream"
+    adapter_class: "IpMptsAdapter"
+    adapter_id: "143"
+    multicast_ip: "239.255.1.11"
+    port: "5000"
+  - name: "Suite Level Digital Signage"
+    adapter_class: "IpMptsAdapter"
+    adapter_id: "144"
+    multicast_ip: "239.255.1.12"
+    port: "5004"

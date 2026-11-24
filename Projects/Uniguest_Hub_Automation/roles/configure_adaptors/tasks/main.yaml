@@ -1,0 +1,49 @@
+---
+- name: Authenticate and get initial session/CSRF token
+  ansible.builtin.uri:
+    url: "http://{{ target_host }}/"
+    method: GET
+    return_content: true
+  register: login_page
+  run_once: true
+
+- name: Set session facts for authentication
+  ansible.builtin.set_fact:
+    csrf_token: "{{ login_page.content | regex_search('name=\"xsr_key_form_index\" value=\"([^\"]+)\"', '\\1') | first }}"
+    session_cookie: "{{ login_page.cookies_string }}"
+  run_once: true
+
+- name: Authenticate admin session
+  ansible.builtin.uri:
+    url: "http://{{ target_host }}/"
+    method: POST
+    headers:
+      Cookie: "{{ session_cookie }}"
+    body_format: form-urlencoded
+    body:
+      xsr_key_form_index: "{{ csrf_token }}"
+      formUsername: "{{ admin_user }}"
+      formPassword: "{{ admin_pass }}"
+      submitButton: "Login"
+    status_code: [200, 302]
+  register: auth_response
+  run_once: true
+
+- name: Loop through and configure each virtual adapter stream
+  ansible.builtin.uri:
+    url: "http://{{ target_host }}/tpiptvmgt/virtualAdapters.php?adapterClass={{ item.adapter_class }}&id={{ item.adapter_id }}"
+    method: POST
+    headers:
+      Cookie: "{{ auth_response.cookies_string | default(session_cookie) }}"
+    body_format: form-urlencoded
+    body:
+      xsr_key_form_index: "{{ csrf_token }}"
+      submit: "Submit"
+      adapterName: "{{ item.name }}"
+      multicastAddress: "{{ item.multicast_ip }}"
+      portNumber: "{{ item.port }}"
+    status_code: [200, 302]
+  loop: "{{ tripleplay_adapters }}"
+  loop_control:
+    loop_var: item
+  register: adapter_update_results
