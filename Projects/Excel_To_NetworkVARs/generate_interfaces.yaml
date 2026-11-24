@@ -1,0 +1,192 @@
+---
+- name: Generate network_interfaces.yaml and vrfs.yaml from Excel inventory
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    excel_path: "{{ playbook_dir }}/interfaces.xlsx"
+    interfaces_sheet_name: "Sheet1"  # Must match the exact tab name in interfaces.xlsx
+    vrfs_sheet_name: "vrfs"              # Must match the exact VRF tab name in interfaces.xlsx
+    output_path: "{{ playbook_dir }}/network_interfaces.yaml"
+    vrf_output_path: "{{ playbook_dir }}/vrfs.yaml"
+
+  tasks:
+    - name: Parse interfaces sheet into structured device dictionary
+      ansible.builtin.command:
+        argv:
+          - python3
+          - -c
+          - |
+            import json, sys
+            import openpyxl
+
+            path, sheet, out_json = sys.argv[1], sys.argv[2], sys.argv[3]
+            wb = openpyxl.load_workbook(path, data_only=True)
+            ws = wb[sheet] if sheet else wb.active
+
+            rows = list(ws.iter_rows(values_only=True))
+            if not rows:
+                raise SystemExit("Interfaces sheet is empty.")
+
+            headers = [str(h).strip() if h is not None else "" for h in rows[0]]
+            devices = {}
+
+            def clean_val(val):
+                if val is None:
+                    return ""
+                if isinstance(val, float) and val.is_integer():
+                    return str(int(val))
+                return str(val).strip()
+
+            def clean_bool(val):
+                s = clean_val(val).lower()
+                if s in ("true", "yes", "1"):
+                    return "true"
+                if s in ("false", "no", "0"):
+                    return "false"
+                return ""
+
+            for r in rows[1:]:
+                if not any(r):
+                    continue
+                rec = {headers[i]: r[i] for i in range(len(headers)) if headers[i]}
+
+                dev_type = clean_val(rec.get("device_type")).lower()
+                dev_name = clean_val(rec.get("device_name"))
+                iface_name = clean_val(rec.get("interface_name"))
+                desc = clean_val(rec.get("description"))
+
+                if not (dev_name and iface_name):
+                    continue
+
+                if dev_name not in devices:
+                    devices[dev_name] = {
+                        "device_type": dev_type,
+                        "global_routing": "",
+                        "interfaces": [],
+                        "ospf": {}
+                    }
+
+                g_routing = clean_bool(rec.get("global_routing"))
+                if g_routing:
+                    devices[dev_name]["global_routing"] = g_routing
+
+                ospf_pid = clean_val(rec.get("ospf_process_id"))
+                router_id = clean_val(rec.get("router_id"))
+                if ospf_pid and router_id:
+                    devices[dev_name]["ospf"] = {
+                        "ospf_process_id": ospf_pid,
+                        "router_id": router_id
+                    }
+
+                iface = {
+                    "name": iface_name,
+                    "description": desc,
+                    "ip_address": clean_val(rec.get("ip_address")),
+                    "netmask": clean_val(rec.get("netmask")),
+                    "routed": clean_bool(rec.get("routed")),
+                    "mode": clean_val(rec.get("mode")),
+                    "allowed_vlans": clean_val(rec.get("allowed_vlans")),
+                    "native_vlan": clean_val(rec.get("native_vlan")),
+                    "access_vlan": clean_val(rec.get("access_vlan")),
+                    "vlan_id": clean_val(rec.get("vlan_id")),
+                }
+                devices[dev_name]["interfaces"].append(iface)
+
+            with open(out_json, "w", encoding="utf-8") as f:
+                json.dump(devices, f)
+          - "{{ excel_path }}"
+          - "{{ interfaces_sheet_name }}"
+          - "/tmp/parsed_network_interfaces.json"
+      changed_when: false
+
+    - name: Parse VRF sheet into structured device VRF dictionary
+      ansible.builtin.command:
+        argv:
+          - python3
+          - -c
+          - |
+            import json, sys
+            import openpyxl
+
+            path, sheet, out_json = sys.argv[1], sys.argv[2], sys.argv[3]
+            wb = openpyxl.load_workbook(path, data_only=True)
+            if sheet not in wb.sheetnames:
+                with open(out_json, "w", encoding="utf-8") as f:
+                    json.dump({}, f)
+                sys.exit(0)
+
+            ws = wb[sheet]
+            rows = list(ws.iter_rows(values_only=True))
+            if not rows:
+                with open(out_json, "w", encoding="utf-8") as f:
+                    json.dump({}, f)
+                sys.exit(0)
+
+            headers = [str(h).strip() if h is not None else "" for h in rows[0]]
+            vrfs_by_device = {}
+
+            def clean_val(val):
+                if val is None:
+                    return ""
+                if isinstance(val, float) and val.is_integer():
+                    return str(int(val))
+                return str(val).strip()
+
+            def split_csv(val):
+                raw = clean_val(val)
+                if not raw:
+                    return []
+                return [item.strip() for item in raw.split(",") if item.strip()]
+
+            for r in rows[1:]:
+                if not any(r):
+                    continue
+                rec = {headers[i]: r[i] for i in range(len(headers)) if headers[i]}
+
+                dev_name = clean_val(rec.get("device_name"))
+                vrf_name = clean_val(rec.get("vrf_name"))
+                if not (dev_name and vrf_name):
+                    continue
+
+                vrfs_by_device.setdefault(dev_name, []).append({
+                    "name": vrf_name,
+                    "description": clean_val(rec.get("description")),
+                    "rd": clean_val(rec.get("rd")),
+                    "route_import": split_csv(rec.get("route_import")),
+                    "route_export": split_csv(rec.get("route_export")),
+                    "interfaces": split_csv(rec.get("interfaces")),
+                })
+
+            with open(out_json, "w", encoding="utf-8") as f:
+                json.dump(vrfs_by_device, f)
+          - "{{ excel_path }}"
+          - "{{ vrfs_sheet_name }}"
+          - "/tmp/parsed_vrfs.json"
+      changed_when: false
+
+    - name: Load parsed interface and VRF facts
+      ansible.builtin.set_fact:
+        parsed_devices: "{{ lookup('file', '/tmp/parsed_network_interfaces.json') | from_json }}"
+        parsed_vrfs: "{{ lookup('file', '/tmp/parsed_vrfs.json') | from_json }}"
+
+    - name: Render network_interfaces.yaml
+      ansible.builtin.template:
+        src: templates/network_interfaces.yaml.j2
+        dest: "{{ output_path }}"
+        mode: "0644"
+
+    - name: Render vrfs.yaml
+      ansible.builtin.template:
+        src: templates/vrfs.yaml.j2
+        dest: "{{ vrf_output_path }}"
+        mode: "0644"
+
+    - name: Remove temporary JSON files
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /tmp/parsed_network_interfaces.json
+        - /tmp/parsed_vrfs.json

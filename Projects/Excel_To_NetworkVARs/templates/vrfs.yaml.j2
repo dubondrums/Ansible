@@ -1,0 +1,34 @@
+---
+# VRF definitions and interface bindings
+
+site_vrfs:
+{% for device, vrfs in parsed_vrfs.items() %}
+  {{ device }}:
+{% for vrf in vrfs %}
+    - name: {{ vrf.name }}
+{% if vrf.description %}
+      description: "{{ vrf.description }}"
+{% endif %}
+{% if vrf.rd %}
+      rd: "{{ vrf.rd }}"
+{% endif %}
+{% if vrf.route_import %}
+      route_import:
+{% for rt in vrf.route_import %}
+        - "{{ rt }}"
+{% endfor %}
+{% endif %}
+{% if vrf.route_export %}
+      route_export:
+{% for rt in vrf.route_export %}
+        - "{{ rt }}"
+{% endfor %}
+{% endif %}
+{% if vrf.interfaces %}
+      interfaces:
+{% for iface in vrf.interfaces %}
+        - {{ iface }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endfor %}

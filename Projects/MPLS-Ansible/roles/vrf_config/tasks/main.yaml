@@ -1,0 +1,32 @@
+---
+- name: Set VRF list for current router
+  ansible.builtin.set_fact:
+    router_vrfs: "{{ site_vrfs[inventory_hostname] | default([]) }}"
+
+- name: Configure VRF definitions on Cisco IOS router
+  cisco.ios.ios_vrf:
+    name: "{{ item.name }}"
+    description: "{{ item.description | default(omit) }}"
+    rd: "{{ item.rd | default(omit) }}"
+    route_import: "{{ item.route_import | default(omit) }}"
+    route_export: "{{ item.route_export | default(omit) }}"
+    state: present
+  loop: "{{ router_vrfs }}"
+  when: router_vrfs | length > 0
+
+- name: Build interface-to-VRF mapping for current router
+  ansible.builtin.set_fact:
+    vrf_interface_bindings: >-
+      {%- set bindings = [] -%}
+      {%- for vrf in router_vrfs -%}
+        {%- for iface in (vrf.interfaces | default([])) -%}
+          {%- set _ = bindings.append({'name': iface, 'vrf_name': vrf.name}) -%}
+        {%- endfor -%}
+      {%- endfor -%}
+      {{ bindings }}
+
+- name: Assign VRFs to interfaces
+  cisco.ios.ios_vrf_interfaces:
+    config: "{{ vrf_interface_bindings }}"
+    state: merged
+  when: vrf_interface_bindings | length > 0

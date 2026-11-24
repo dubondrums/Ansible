@@ -1,0 +1,55 @@
+---
+# Interface and IP configs for the network devices
+
+site_interfaces:
+{% set current_type = namespace(val='') -%}
+{% for device, data in parsed_devices.items() -%}
+{% if data.device_type != current_type.val -%}
+{% set current_type.val = data.device_type -%}
+{% if data.device_type == 'router' %}
+# Routers
+{% elif data.device_type == 'switch' %}
+# Switches
+{% else %}
+# {{ data.device_type | capitalize }}s
+{% endif -%}
+{% endif %}
+    {{ device }}:
+{% if data.global_routing is defined and data.global_routing %}
+      global_routing: {{ data.global_routing }}
+{% endif %}
+      interfaces:
+{% for iface in data.interfaces %}
+- name: {{ iface.name }}
+        description: "{{ iface.description }}"
+{% if iface.ip_address is defined and iface.ip_address %}
+        ip_address: {{ iface.ip_address }}
+{% endif %}
+{% if iface.netmask is defined and iface.netmask %}
+        netmask: {{ iface.netmask }}
+{% endif %}
+{% if iface.routed is defined and iface.routed %}
+        routed: {{ iface.routed }}
+{% endif %}
+{% if iface.mode is defined and iface.mode %}
+        mode: {{ iface.mode }}
+{% endif %}
+{% if iface.allowed_vlans is defined and iface.allowed_vlans %}
+        allowed_vlans: "{{ iface.allowed_vlans }}"
+{% endif %}
+{% if iface.native_vlan is defined and iface.native_vlan != '' %}
+        native_vlan: {{ iface.native_vlan }}
+{% endif %}
+{% if iface.access_vlan is defined and iface.access_vlan != '' %}
+        access_vlan: {{ iface.access_vlan }}
+{% endif %}
+{% if iface.vlan_id is defined and iface.vlan_id != '' %}
+        vlan_id: {{ iface.vlan_id }}
+{% endif %}
+{% endfor %}
+{% if data.ospf is defined and data.ospf %}
+      ospf:
+        ospf_process_id: {{ data.ospf.ospf_process_id }}
+        router_id: {{ data.ospf.router_id }}
+{% endif %}
+{% endfor %}
