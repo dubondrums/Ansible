@@ -47,6 +47,11 @@
     - network_interface_config
 
 - name: Configure OSPF in Customer Edge
+  hosts: CE1,CE2,CE3,CE4,CE5,CE6,CE7,CE8
+  gather_facts: false
+
+  roles:
+    - ospf_config
 
 # Step 4: Adjust LDP settings on Core and Provider Edge Routers
 - name: Adjust LDP settings on Core and Provider Edge Routers
@@ -54,4 +59,13 @@
   gather_facts: false
 
   roles:
-    - ospf_config    
+    - ldp_config
+
+# Step 5: Configure MPLS on Core and Provider Edge Routers
+- name: Configure MPLS on Core and Provider Edge Routers
+  hosts: P1,P2,P3,PE1,PE2,PE3,PE4
+  gather_facts: false
+  
+  roles:
+    - mpls_config
+    

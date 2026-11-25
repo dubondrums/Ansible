@@ -1,0 +1,15 @@
+---
+mpls_autoconfig:
+  R1:
+    enable_global_ldp: true
+    ospf_processes:
+      - ospf_process_id: 1
+        area: "0"
+      - ospf_process_id: 2
+        vrf: CUST_A
+    excluded_interfaces:
+      - GigabitEthernet0/3
+  R2:
+    enable_global_ldp: true
+    ospf_processes:
+      - ospf_process_id: 1

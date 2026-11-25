@@ -1,0 +1,31 @@
+
+---
+- name: Load MPLS LDP autoconfiguration variables
+  ansible.builtin.include_vars:
+    file: mpls_autoconfig.yaml
+
+- name: Ensure MPLS and LDP are enabled globally
+  cisco.ios.ios_config:
+    lines:
+      - mpls ip
+      - mpls label protocol ldp
+  when:
+    - inventory_hostname in (mpls_autoconfig | default({}))
+    - mpls_autoconfig[inventory_hostname].enable_global_ldp | default(true) | bool
+
+- name: Enable MPLS LDP autoconfig under OSPF processes
+  cisco.ios.ios_config:
+    lines: >-
+      mpls ldp autoconfig{{ (' area ' ~ item.area) if (item.area | default('') | string | length > 0) else '' }}
+    parents: >-
+      router ospf {{ item.ospf_process_id }}{{ (' vrf ' ~ item.vrf) if (item.vrf | default('') | string | length > 0) else '' }}
+  loop: "{{ mpls_autoconfig[inventory_hostname].ospf_processes | default([]) }}"
+  when: inventory_hostname in (mpls_autoconfig | default({}))
+
+- name: Disable MPLS LDP igp autoconfig on excluded interfaces
+  cisco.ios.ios_config:
+    lines:
+      - no mpls ldp igp autoconfig
+    parents: "interface {{ item }}"
+  loop: "{{ mpls_autoconfig[inventory_hostname].excluded_interfaces | default([]) }}"
+  when: inventory_hostname in (mpls_autoconfig | default({}))
