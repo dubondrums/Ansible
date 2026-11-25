@@ -1,0 +1,90 @@
+---
+mpbgp_config:
+  PE1:
+    asn: 65000
+    router_id: 10.255.255.11
+    disable_default_ipv4_unicast: true
+    ibgp_neighbors:
+      - ip: 10.255.255.12
+        remote_as: 65000
+        update_source: Loopback0
+        send_community: both
+      - ip: 10.255.255.13
+        remote_as: 65000
+        update_source: Loopback0
+        send_community: both
+      - ip: 10.255.255.14
+        remote_as: 65000
+        update_source: Loopback0
+        send_community: both  
+    vrfs:
+      - name: CORP
+        redistribute_ospf_process_id: 2
+      - name: VOICE
+        redistribute_ospf_process_id: 3
+  PE2:
+    asn: 65000
+    router_id: 10.255.255.12
+    disable_default_ipv4_unicast: true
+    ibgp_neighbors:
+      - ip: 10.255.255.11
+        remote_as: 65000
+        update_source: Loopback0
+        send_community: both
+      - ip: 10.255.255.13
+        remote_as: 65000
+        update_source: Loopback0
+        send_community: both
+      - ip: 10.255.255.14
+        remote_as: 65000
+        update_source: Loopback0
+        send_community: both
+    vrfs:
+      - name: VIDEO
+        redistribute_ospf_process_id: 2
+      - name: MGMT
+        redistribute_ospf_process_id: 3
+  PE3:
+    asn: 65000
+    router_id: 10.255.255.13
+    disable_default_ipv4_unicast: true
+    ibgp_neighbors:
+      - ip: 10.255.255.11
+        remote_as: 65000
+        update_source: Loopback0
+        send_community: both
+      - ip: 10.255.255.12
+        remote_as: 65000
+        update_source: Loopback0
+        send_community: both
+      - ip: 10.255.255.14 
+        remote_as: 65000
+        update_source: Loopback0
+        send_community: both
+    vrfs:
+      - name: CORP
+        redistribute_ospf_process_id: 2
+      - name: VOICE
+        redistribute_ospf_process_id: 3
+  PE4:
+    asn: 65000
+    router_id: 10.255.255.14
+    disable_default_ipv4_unicast: true
+    ibgp_neighbors:
+      - ip: 10.255.255.11
+        remote_as: 65000
+        update_source: Loopback0
+        send_community: both
+      - ip: 10.255.255.12
+        remote_as: 65000
+        update_source: Loopback0
+        send_community: both
+      - ip: 10.255.255.13
+        remote_as: 65000
+        update_source: Loopback0
+        send_community: both
+    vrfs:
+      - name: VIDEO
+        redistribute_ospf_process_id: 2
+      - name: MGMT
+        redistribute_ospf_process_id: 3
