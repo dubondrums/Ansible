@@ -1,0 +1,17 @@
+---
+- name: Load LDP router label range configuration
+  ansible.builtin.include_vars:
+    file: ldp_router_config.yaml
+
+- name: Configure MPLS LDP label range
+  cisco.ios.ios_config:
+    lines: >-
+      mpls label range
+      {{ ldp_router_config[inventory_hostname].label_min }}
+      {{ ldp_router_config[inventory_hostname].label_max }}
+      {%- if ldp_router_config[inventory_hostname].static_min is defined and ldp_router_config[inventory_hostname].static_max is defined %}
+      static
+      {{ ldp_router_config[inventory_hostname].static_min }}
+      {{ ldp_router_config[inventory_hostname].static_max }}
+      {%- endif %}
+  when: inventory_hostname in (ldp_router_config | default({}))

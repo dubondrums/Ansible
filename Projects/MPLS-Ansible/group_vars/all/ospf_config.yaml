@@ -36,6 +36,16 @@ ospf_configs:
       networks:
         - network 10.255.0.12 0.0.0.3 area 0
         - network 10.255.255.11 0.0.0.0 area 0
+    - ospf_process_id: 2
+      vrf: CORP
+      router_id: 10.255.255.11
+      networks:
+        - network 172.16.1.0 0.0.0.3 area 0
+    - ospf_process_id: 3
+      vrf: VOICE
+      router_id: 10.255.255.11
+      networks:
+        - network 172.16.2.0 0.0.0.3 area 0
 
   PE2:
     - ospf_process_id: 1
@@ -44,6 +54,16 @@ ospf_configs:
         - network 10.255.0.16 0.0.0.3 area 0
         - network 10.255.0.20 0.0.0.3 area 0
         - network 10.255.255.12 0.0.0.0 area 0
+    - ospf_process_id: 2
+      vrf: VIDEO
+      router_id: 10.255.255.12
+      networks:
+        - network 172.16.3.0 0.0.0.3 area 0
+    - ospf_process_id: 3
+      vrf: MGMT
+      router_id: 10.255.255.12
+      networks:
+        - network 172.16.4.0 0.0.0.3 area 0
 
   PE3:
     - ospf_process_id: 1
@@ -52,6 +72,16 @@ ospf_configs:
         - network 10.255.0.24 0.0.0.3 area 0
         - network 10.255.0.28 0.0.0.3 area 0
         - network 10.255.255.13 0.0.0.0 area 0
+    - ospf_process_id: 2
+      vrf: CORP
+      router_id: 10.255.255.13
+      networks:
+        - network 172.16.5.0 0.0.0.3 area 0
+    - ospf_process_id: 3
+      vrf: VOICE
+      router_id: 10.255.255.13
+      networks:
+        - network 172.16.6.0 0.0.0.3 area 0
   
   PE4:
     - ospf_process_id: 1
@@ -59,3 +89,13 @@ ospf_configs:
       networks:
         - network 10.255.0.32 0.0.0.3 area 0
         - network 10.255.255.14 0.0.0.0 area 0
+    - ospf_process_id: 2
+      vrf: VIDEO
+      router_id: 10.255.255.14
+      networks:
+        - network 172.16.7.0 0.0.0.3 area 0
+    - ospf_process_id: 3
+      vrf: MGMT
+      router_id: 10.255.255.14
+      networks:
+        - network 172.16.8.0 0.0.0.3 area 0

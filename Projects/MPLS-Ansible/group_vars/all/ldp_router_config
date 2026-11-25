@@ -1,0 +1,24 @@
+---
+
+ldp_router_config:
+  P1:
+    label_min: 1000
+    label_max: 1999
+  P2: 
+    label_min: 2000
+    label_max: 2999
+  P3:
+    label_min: 3000
+    label_max: 3999  
+  PE1:
+    label_min: 4000
+    label_max: 4099
+  PE2:
+    label_min: 5000
+    label_max: 5999
+  PE3:
+    label_min: 6000
+    label_max: 6999
+  PE4:
+    label_min: 7000
+    label_max: 7999
