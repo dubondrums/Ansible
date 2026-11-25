@@ -68,4 +68,11 @@
   
   roles:
     - mpls_config
-    
+
+# Step 6: Configure MP-BGP on Provider Edge Routers
+- name: Configure MP-BGP on Provider Edge Routers
+  hosts: PE1,PE2,PE3,PE4
+  gather_facts: false
+  
+  roles:
+    - mp_bgp_config

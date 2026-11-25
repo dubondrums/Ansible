@@ -1,1 +1,57 @@
 ---
+- name: Load MP-BGP PE router configuration
+  ansible.builtin.include_vars:
+    file: mpbgp_config.yaml
+
+- name: Configure BGP process and iBGP neighbor sessions
+  cisco.ios.ios_config:
+    lines: >-
+      {{
+        (['bgp router-id ' ~ mpbgp_config[inventory_hostname].router_id]
+          if (mpbgp_config[inventory_hostname].router_id | default('') | string | length > 0)
+          else [])
+        + (['no bgp default ipv4-unicast']
+          if (mpbgp_config[inventory_hostname].disable_default_ipv4_unicast | default(true) | bool)
+          else [])
+        + (mpbgp_config[inventory_hostname].ibgp_neighbors | default([])
+          | map('json_query', '[ip, remote_as]') | list)
+      }}
+    parents: "router bgp {{ mpbgp_config[inventory_hostname].asn }}"
+  when: inventory_hostname in (mpbgp_config | default({}))
+
+- name: Configure iBGP session update-source
+  cisco.ios.ios_config:
+    lines:
+      - "neighbor {{ item.ip }} update-source {{ item.update_source }}"
+    parents: "router bgp {{ mpbgp_config[inventory_hostname].asn }}"
+  loop: "{{ mpbgp_config[inventory_hostname].ibgp_neighbors | default([]) }}"
+  when:
+    - inventory_hostname in (mpbgp_config | default({}))
+    - item.update_source | default('') | string | length > 0
+
+- name: Activate iBGP neighbors and set communities under address-family vpnv4
+  cisco.ios.ios_config:
+    lines: >-
+      {{
+        ['neighbor ' ~ item.ip ~ ' activate']
+        + (['neighbor ' ~ item.ip ~ ' send-community ' ~ item.send_community]
+          if (item.send_community | default('') | string | length > 0)
+          else [])
+      }}
+    parents:
+      - "router bgp {{ mpbgp_config[inventory_hostname].asn }}"
+      - address-family vpnv4
+  loop: "{{ mpbgp_config[inventory_hostname].ibgp_neighbors | default([]) }}"
+  when: inventory_hostname in (mpbgp_config | default({}))
+
+- name: Configure VRF IPv4 address families under BGP
+  cisco.ios.ios_config:
+    lines:
+      - "redistribute ospf {{ item.redistribute_ospf_process_id }}"
+    parents:
+      - "router bgp {{ mpbgp_config[inventory_hostname].asn }}"
+      - "address-family ipv4 vrf {{ item.name }}"
+  loop: "{{ mpbgp_config[inventory_hostname].vrfs | default([]) }}"
+  when:
+    - inventory_hostname in (mpbgp_config | default({}))
+    - item.redistribute_ospf_process_id is defined
