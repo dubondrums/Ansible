@@ -2,3 +2,39 @@
 # VRF definitions and interface bindings
 
 site_vrfs:
+  PE1:
+    - name: CORP
+      rd: "65000:101"
+    - name: VOICE
+      rd: "65000:102"
+    - name: VIDEO
+      rd: "65000:103"
+    - name: MGMT
+      rd: "65000:104"
+  PE2:
+    - name: CORP
+      rd: "65000:201"
+    - name: VOICE
+      rd: "65000:202"
+    - name: VIDEO
+      rd: "65000:203"
+    - name: MGMT
+      rd: "65000:204"
+  PE3:
+    - name: CORP
+      rd: "65000:301"
+    - name: VOICE
+      rd: "65000:302"
+    - name: VIDEO
+      rd: "65000:303"
+    - name: MGMT
+      rd: "65000:304"
+  PE4:
+    - name: CORP
+      rd: "65000:401"
+    - name: VOICE
+      rd: "65000:402"
+    - name: VIDEO
+      rd: "65000:403"
+    - name: MGMT
+      rd: "65000:404"
