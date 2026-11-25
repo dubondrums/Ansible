@@ -67,7 +67,7 @@
   gather_facts: false
   
   roles:
-    - mpls_config
+    - mpls_autoconfig
 
 # Step 6: Configure MP-BGP on Provider Edge Routers
 - name: Configure MP-BGP on Provider Edge Routers
