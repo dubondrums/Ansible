@@ -1,0 +1,48 @@
+---
+
+all:
+  children:
+    routers:
+      vars:
+        ansible_connection: ansible.netcommon.network_cli
+        ansible_network_os: ios
+        ansible_user: chris
+        ansible_password: cisco123
+        ansible_become: yes            
+        ansible_become_method: enable  
+        ansible_network_cli_ssh_type: paramiko
+        ansible_connect_timeout: 60
+        ansible_command_timeout: 120
+      hosts:
+        P1:
+          ansible_host: 10.10.20.10
+        P2:
+          ansible_host: 10.10.20.11
+        P3:
+          ansible_host: 10.10.20.12
+        PE1:
+          ansible_host: 10.10.20.13
+        PE2:
+          ansible_host: 10.10.20.14
+        PE3:
+          ansible_host: 10.10.20.15
+        PE4:
+          ansible_host: 10.10.20.16
+        CE1:
+          ansible_host: 10.10.20.17
+        CE2:
+          ansible_host: 10.10.20.18
+        CE3:
+          ansible_host: 10.10.20.19
+        CE4:
+          ansible_host: 10.10.20.20
+        CE5:
+          ansible_host: 10.10.20.21
+        CE6:
+          ansible_host: 10.10.20.22
+        CE7:
+          ansible_host: 10.10.20.23
+        CE8:
+          ansible_host: 10.10.20.24
+
+

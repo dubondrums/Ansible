@@ -1,0 +1,61 @@
+---
+# This file contains OSPF configuration variables for the network devices.
+ospf_configs:
+  P1:
+    - ospf_process_id: 1
+      router_id: 10.255.255.1
+      networks:
+        - network 10.255.0.0 0.0.0.3 area 0
+        - network 10.255.0.8 0.0.0.3 area 0
+        - network 10.255.0.12 0.0.0.3 area 0
+        - network 10.255.0.16 0.0.0.3 area 0
+        - network 10.255.255.1 0.0.0.0 area 0
+        
+  P2:
+    - ospf_process_id: 1
+      router_id: 10.255.255.2
+      networks:
+        - network 10.255.0.0 0.0.0.3 area 0
+        - network 10.255.0.4 0.0.0.3 area 0
+        - network 10.255.0.20 0.0.0.3 area 0
+        - network 10.255.0.24 0.0.0.3 area 0
+        - network 10.255.255.2 0.0.0.0 area 0
+        
+  P3:
+    - ospf_process_id: 1
+      router_id: 10.255.255.3
+      networks:
+        - network 10.255.0.4 0.0.0.3 area 0
+        - network 10.255.0.8 0.0.0.255 area 0
+        - network 10.255.0.28 0.0.0.255 area 0
+        - network 10.255.255.3 0.0.0.0 area 0
+
+  PE1:
+    - ospf_process_id: 1
+      router_id: 10.255.255.11
+      networks:
+        - network 10.255.0.12 0.0.0.3 area 0
+        - network 10.255.255.11 0.0.0.0 area 0
+
+  PE2:
+    - ospf_process_id: 1
+      router_id: 10.255.255.12
+      networks:
+        - network 10.255.0.16 0.0.0.3 area 0
+        - network 10.255.0.20 0.0.0.3 area 0
+        - network 10.255.255.12 0.0.0.0 area 0
+
+  PE3:
+    - ospf_process_id: 1
+      router_id: 10.255.255.13
+      networks:
+        - network 10.255.0.24 0.0.0.3 area 0
+        - network 10.255.0.28 0.0.0.3 area 0
+        - network 10.255.255.13 0.0.0.0 area 0
+  
+  PE4:
+    - ospf_process_id: 1
+      router_id: 10.255.255.14
+      networks:
+        - network 10.255.0.32 0.0.0.3 area 0
+        - network 10.255.255.14 0.0.0.0 area 0

@@ -1,0 +1,57 @@
+---
+# 1. Global Layer 3 Switch Activation
+- name: Enable global IP routing on multilayer switches
+  cisco.ios.ios_config:
+    lines:
+      - ip routing
+  when: 
+    - inventory_hostname in site_interfaces
+    - site_interfaces[inventory_hostname].global_routing is defined
+    - site_interfaces[inventory_hostname].global_routing
+
+# 2. Native module handles 'no shutdown' idempotently
+- name: Ensure all required interfaces are enabled
+  cisco.ios.ios_config:
+    lines:
+      - no shutdown
+    parents:
+      - "interface {{ item.name }}"
+  loop: "{{ site_interfaces[inventory_hostname].interfaces }}"
+  when: inventory_hostname in site_interfaces
+
+# 3. Configure L3 attributes line by line
+- name: Configure router and switch interfaces and subinterfaces
+  cisco.ios.ios_config:
+    lines:
+    # 1. Handle Routed Switch Ports
+      - "{{ 'no switchport' if item.routed is defined and item.routed else omit }}"
+      
+      # 2. FIX: Hardcode dot1q encapsulation right before changing to trunk mode
+      - "{{ 'switchport trunk encapsulation dot1q' if item.mode is defined and item.mode == 'trunk' else omit }}"
+      
+      # 3. Handle Trunk Ports 
+      - "{{ 'switchport mode ' ~ item.mode if item.mode is defined else omit }}"
+      - "{{ 'switchport trunk allowed vlan ' ~ item.allowed_vlans if item.allowed_vlans is defined else omit }}"
+      
+      # 4. Handle Access Ports 
+      - "{{ 'switchport access vlan ' ~ item.access_vlan if item.mode is defined and item.mode == 'access' and item.access_vlan is defined else omit }}"
+      
+      # 5. Global Layer 3 features & Descriptions
+      - "{{ 'encapsulation dot1q ' ~ item.vlan_id if item.vlan_id is defined else omit }}"
+      - "{{ 'description ' ~ item.description if item.description is defined else omit }}"
+      - "{{ 'ip address ' ~ item.ip_address ~ ' ' ~ item.netmask if item.ip_address is defined else omit }}"
+    parents: "interface {{ item.name }}"
+    match: line
+  loop: "{{ site_interfaces[inventory_hostname].interfaces }}"
+  when: inventory_hostname in site_interfaces and not item.name.startswith('Loopback')
+
+# 4. Configure Loopbacks line by line
+- name: Configure router loopback interfaces
+  cisco.ios.ios_config:
+    lines:
+      - "{{ 'description ' ~ item.description if item.description is defined else omit }}"
+      - "ip address {{ item.ip_address }} {{ item.netmask }}"
+    parents: "interface {{ item.name }}"
+    match: line
+  loop: "{{ site_interfaces[inventory_hostname].interfaces }}"
+  when: inventory_hostname in site_interfaces and item.name.startswith('Loopback')

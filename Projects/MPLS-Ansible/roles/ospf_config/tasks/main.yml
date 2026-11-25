@@ -1,0 +1,8 @@
+---
+
+- name: Configure OSPF routing
+  cisco.ios.ios_config:
+    lines: "{{ ['router-id ' ~ item.router_id] + item.networks }}"
+    parents: "router ospf {{ item.ospf_process_id }}"
+  loop: "{{ ospf_configs[inventory_hostname] }}"
+  when: inventory_hostname in ospf_configs

@@ -1,0 +1,151 @@
+---
+# Interface and IP configs for the network devices
+
+site_interfaces:
+# Routers
+    P1:
+      interfaces:
+        - name: L0
+          description: "Loopback P1"
+          ip_address: 10.255.255.1
+          netmask: 255.255.255.255
+        - name: G0/1
+          description: "to P2"
+          ip_address: 10.255.0.1
+          netmask: 255.255.255.252
+        - name: G0/2
+          description: "to P3"
+          ip_address: 10.255.0.10
+          netmask: 255.255.255.252
+        - name: G0/3
+          description: "to PE1"
+          ip_address: 10.255.0.13
+          netmask: 255.255.255.252
+        - name: G0/4
+          description: "to PE2"
+          ip_address: 10.255.0.17
+          netmask: 255.255.255.252
+    P2:
+      interfaces:
+        - name: L0
+          description: "Loopback P2"
+          ip_address: 10.255.255.2
+          netmask: 255.255.255.255
+        - name: G0/1
+          description: "to P1"
+          ip_address: 10.255.0.2
+          netmask: 255.255.255.252
+        - name: G0/2
+          description: "to P3"
+          ip_address: 10.255.0.5
+          netmask: 255.255.255.252
+        - name: G0/3
+          description: "to PE2"
+          ip_address: 10.255.0.21
+          netmask: 255.255.255.252
+        - name: G0/4
+          description: "to PE3"
+          ip_address: 10.255.0.25
+          netmask: 255.255.255.252
+    P3:
+      interfaces:
+        - name: L0
+          description: "Loopback P3"
+          ip_address: 10.255.255.3
+          netmask: 255.255.255.255
+        - name: G0/1
+          description: "to P2"
+          ip_address: 10.255.0.6
+          netmask: 255.255.255.252
+        - name: G0/2
+          description: "to P1"
+          ip_address: 10.255.0.9
+          netmask: 255.255.255.252
+        - name: G0/3
+          description: "to PE3"
+          ip_address: 10.255.0.29
+          netmask: 255.255.255.252
+        - name: G0/4
+          description: "to PE4"
+          ip_address: 10.255.0.33
+          netmask: 255.255.255.252
+    PE1:
+      interfaces:
+        - name: L0
+          description: "Loopback PE1"
+          ip_address: 10.255.255.11
+          netmask: 255.255.255.255
+        - name: G0/1
+          description: "to P1"
+          ip_address: 10.255.0.14
+          netmask: 255.255.255.252
+        - name: G0/2
+          description: "to CE1"
+          ip_address: 172.16.1.1
+          netmask: 255.255.255.252
+        - name: G0/3
+          description: "to CE2"
+          ip_address: 172.16.2.1
+          netmask: 255.255.255.252
+    PE2:
+      interfaces:
+        - name: L0
+          description: "Loopback PE2"
+          ip_address: 10.255.255.12
+          netmask: 255.255.255.255
+        - name: G0/1
+          description: "to P1"
+          ip_address: 10.255.0.18
+          netmask: 255.255.255.252
+        - name: G0/2
+          description: "to P2"
+          ip_address: 10.255.0.22
+          netmask: 255.255.255.252
+        - name: G0/3
+          description: "to CE3"
+          ip_address: 172.16.3.1
+          netmask: 255.255.255.252
+        - name: G0/4
+          description: "to CE4"
+          ip_address: 172.16.4.1
+          netmask: 255.255.255.252
+    PE3:
+      interfaces:
+        - name: L0
+          description: "Loopback PE3"
+          ip_address: 10.255.255.13
+          netmask: 255.255.255.255
+        - name: G0/1
+          description: "to P2"
+          ip_address: 10.255.0.26
+          netmask: 255.255.255.252
+        - name: G0/2
+          description: "to P3"
+          ip_address: 10.255.0.30
+          netmask: 255.255.255.252
+        - name: G0/3
+          description: "to CE5"
+          ip_address: 172.16.5.1
+          netmask: 255.255.255.252
+        - name: G0/4
+          description: "to CE6"
+          ip_address: 172.16.6.1
+          netmask: 255.255.255.252
+    PE4:
+      interfaces:
+        - name: L0
+          description: "Loopback PE4"
+          ip_address: 10.255.255.14
+          netmask: 255.255.255.255
+        - name: G0/1
+          description: "to P3"
+          ip_address: 10.255.0.34
+          netmask: 255.255.255.252
+        - name: G0/2
+          description: "to CE7"
+          ip_address: 172.16.7.1
+          netmask: 255.255.255.252
+        - name: G0/3
+          description: "to CE8"
+          ip_address: 172.16.8.1
+          netmask: 255.255.255.252

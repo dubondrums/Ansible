@@ -1,9 +1,16 @@
 ---
 # Main entrypoint playbook for MPLS-Ansible
 
-- name: Deploy configurations to hosts
-  hosts: all
+- name: Configure Interfaces in Core 
+  hosts: P1,P2,P3
   gather_facts: false
   
   roles:
-    - vrf_config
+    - network_interface_config
+
+- name: Configure OSPF in Core
+  hosts: P1,P2,P3
+  gather_facts: false
+  
+  roles:
+    - ospf_config
